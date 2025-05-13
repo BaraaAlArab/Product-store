@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import {Box} from "@chakra-ui/react";
 import CreatePage from "./pages/CreatePage.jsx";
 import HomePage from "./pages/HomePage.jsx";
@@ -15,6 +16,13 @@ function App() {
           <Route path="/Create" element={<CreatePage />} />
         </Routes>
       </Box>
+=======
+import {Button} from "./components/ui/Button.jsx";
+function App() {
+  return (
+    <>
+      <Button>Hello</Button>
+>>>>>>> 5793afb7d5a906d63b8fdd3cdb70ebddee71e102
     </>
   );
 }
