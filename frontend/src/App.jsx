@@ -1,4 +1,3 @@
-
 import {Box} from "@chakra-ui/react";
 import CreatePage from "./pages/CreatePage.jsx";
 import HomePage from "./pages/HomePage.jsx";
@@ -16,9 +15,7 @@ function App() {
           <Route path="/Create" element={<CreatePage />} />
         </Routes>
       </Box>
-      </>
-
-
+    </>
   );
 }
 

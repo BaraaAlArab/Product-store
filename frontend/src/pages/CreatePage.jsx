@@ -10,7 +10,7 @@ function CreatePage() {
     image: "",
   });
   const handleAddProduct = () => {
-    console.log(newProduct);
+    
   };
   return (
     <Container maxW={"container.sm"}>
@@ -52,7 +52,7 @@ function CreatePage() {
                 setNewProduct({...newProduct, image: e.target.value})
               }
             />
-            <Button colorScheme="blue" onClick={handleAddProduct}>
+            <Button colorScheme="blue" onClick={handleAddProduct} w="full">
               Add Product
             </Button>
           </VStack>

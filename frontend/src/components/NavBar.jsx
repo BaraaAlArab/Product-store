@@ -7,6 +7,7 @@ import {FaSun} from "react-icons/fa";
 
 function NavBar() {
   const {ColorMode, toggleColorMode} = useColorMode();
+
   return (
     <>
       <Container maxW={"1140px"} px={"4"}>
