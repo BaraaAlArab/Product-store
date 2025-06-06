@@ -15,5 +15,6 @@ export const useProductStore = create((set) => ({
     });
     const data = await res.json();
     set((state) => ({products: [...state.products, data.data]}));
+    return {success: true, message: "product created"};
   },
 }));
