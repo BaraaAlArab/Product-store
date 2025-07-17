@@ -22,6 +22,7 @@ function NavBar() {
             fontWeight="bold"
             textTransform="uppercase"
             textAlign="center"
+            color="blue.500"
           >
             <Link as={RouterLink} to="/">
               Product Store 🛒
