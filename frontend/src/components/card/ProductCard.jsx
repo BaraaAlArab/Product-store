@@ -80,7 +80,7 @@ export default function ProductCard({product}) {
         overflow="hidden"
         transition="all 0.3s"
         _hover={{transform: "translateY(-5px)", shadow: "xl"}}
-        w="100%"
+        width="39%"
         maxW="sm"
         p={4}
         m={4}
@@ -94,18 +94,15 @@ export default function ProductCard({product}) {
             ${product.price}
           </Text>
           <HStack spacing={2}>
+            <IconButton onClick={openModal} aria-label="Edit product">
+              {<Icon as={CiEdit} boxSize={6} colorScheme="Blue" />}
+            </IconButton>
             <IconButton
-              icon={<Icon as={CiEdit} boxSize={6} />}
-              onClick={openModal}
-              colorScheme="blue"
-              aria-label="Edit product"
-            />
-            <IconButton
-              icon={<Icon as={MdDelete} boxSize={6} />}
               onClick={() => handleDeleteProduct(product._id)}
-              colorScheme="red"
               aria-label="Delete product"
-            />
+            >
+              <Icon as={MdDelete} boxSize={6} colorScheme="red" />
+            </IconButton>
           </HStack>
         </Box>
       </Box>
