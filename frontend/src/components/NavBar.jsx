@@ -1,5 +1,6 @@
 import {Container, Flex, Text, HStack, Button} from "@chakra-ui/react";
 import {CiSquarePlus} from "react-icons/ci";
+import { FiUserPlus } from "react-icons/fi";
 import {Link, Link as RouterLink} from "react-router-dom";
 import {useColorMode} from "./ui/color-mode";
 import {IoMoonSharp} from "react-icons/io5";
@@ -34,7 +35,11 @@ function NavBar() {
                 <CiSquarePlus fontSize={20} />
               </Button>
             </Link>
-
+            <Link to="/CreateAccount">
+              <Button>
+                <FiUserPlus fontSize={20} />
+              </Button>
+            </Link>
             <Button onClick={toggleColorMode}>
               {ColorMode === "light" ? <IoMoonSharp /> : <FaSun size="20" />}
             </Button>

@@ -10,8 +10,8 @@ dotenv.config();
 const PORT = process.env.PORT || 5000;
 const app = express();
 app.use(express.json()); // Accept JSON data
-app.use("/api/users", User);
 
+app.use("/api/users", User);
 app.use("/api/products", products);
 
 app.listen(PORT, () => {

@@ -2,6 +2,28 @@ import User from "../models/User.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
+//Register Client (role: client)
+export const registerClient = async (req, res) => {
+  try {
+    const {name, email, password, role} = req.body;
+    const existingUser = await User.findOne({email});
+    if (existingUser) {
+      return res.status(400).json({message: "Email already exists"});
+    }
+    const newClient = new User({
+      name,
+      email,
+      password,
+      role: role || "client", // Default to client if role is not sent
+    });
+    await newClient.save();
+    res.status(201).json({message: "Client registered successfully"});
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({message: "Server error"});
+  }
+};
+
 // Register Admin (role: admin)
 export const registerAdmin = async (req, res) => {
   try {

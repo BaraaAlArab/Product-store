@@ -4,6 +4,7 @@ import HomePage from "./pages/HomePage.jsx";
 import {Route, Routes} from "react-router-dom";
 import NavBar from "./components/NavBar.jsx";
 import {useColorModeValue} from "./components/ui/color-mode.jsx";
+import CreateAccount from "./pages/CreateAccount.jsx";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/Create" element={<CreatePage />} />
+          <Route path="/CreateAccount" element={<CreateAccount />} />
         </Routes>
       </Box>
     </>

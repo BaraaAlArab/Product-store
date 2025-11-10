@@ -23,7 +23,7 @@ const userSchema = new Mongoose.Schema(
       type: String,
       required: true,
       enum: ["admin", "client"],
-      default: "admin",
+      default: "client" ,
     },
   },
   {timestamps: true},
