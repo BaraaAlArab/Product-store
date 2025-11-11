@@ -5,7 +5,8 @@ import {Route, Routes} from "react-router-dom";
 import NavBar from "./components/NavBar.jsx";
 import {useColorModeValue} from "./components/ui/color-mode.jsx";
 import CreateAccount from "./pages/CreateAccount.jsx";
-
+import Admin from "./pages/Admin.jsx";
+import Client from "./pages/Client.jsx";
 function App() {
   return (
     <>
@@ -15,6 +16,8 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/Create" element={<CreatePage />} />
           <Route path="/CreateAccount" element={<CreateAccount />} />
+          <Route path="/Admin" element={<Admin />} />
+          <Route path="/Client" element={<Client />} />
         </Routes>
       </Box>
     </>

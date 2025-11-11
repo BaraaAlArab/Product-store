@@ -1,14 +1,4 @@
 import React, { useState, useMemo } from "react";
-
-/**
- * CreateAccount.jsx
- * - Responsive, accessible sign-up form for Admin and Client accounts
- * - Inline styles for a clean single-file example (swap for CSS/SCSS in real projects)
- * - Client-side validation, password strength meter, role toggle, show/hide password
- *
- * Usage: Place in /src/pages and route to it in your app router.
- */
-
 const styles = {
     page: {
         minHeight: "100vh",
@@ -104,9 +94,6 @@ function evaluatePasswordStrength(pw) {
     if (pw.length >= 12) score += 10;
     return Math.min(100, score);
 }
-
-
-
  function CreateAccount() {
     const [role, setRole] = useState("client"); // 'client' or 'admin'
     const [name, setName] = useState("");
