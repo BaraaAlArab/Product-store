@@ -6,6 +6,7 @@ const userSchema = new Mongoose.Schema(
       type: String,
       required: true,
       trim: true,
+      unique: true,
     },
     email: {
       type: String,
@@ -22,9 +23,10 @@ const userSchema = new Mongoose.Schema(
     role: {
       type: String,
       required: true,
-      enum: ["admin", "client"],
-      default: "client" ,
+enum: [ "admin", "client" ],
+      default: "client",
     },
+    
   },
   {timestamps: true},
 );

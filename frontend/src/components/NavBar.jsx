@@ -35,7 +35,7 @@ function NavBar() {
                 <CiSquarePlus fontSize={20} />
               </Button>
             </Link>
-            <Link to="/CreateAccount">
+            <Link to="/Account">
               <Button>
                 <FiUserPlus fontSize={20} />
               </Button>

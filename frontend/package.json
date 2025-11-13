@@ -16,6 +16,7 @@
     "@chakra-ui/cli": "^3.19.2",
     "@chakra-ui/react": "^3.17.0",
     "@emotion/react": "^11.14.0",
+    "@tailwindcss/vite": "^4.1.17",
     "add": "^2.0.6",
     "gh-pages": "^6.3.0",
     "init": "^0.1.2",
@@ -25,6 +26,8 @@
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.6.0",
     "snippet": "^0.1.0",
+    "tailwind": "^4.0.0",
+    "tailwindcss": "^4.1.17",
     "toaster": "^0.1.2",
     "zustand": "^5.0.5"
   },
