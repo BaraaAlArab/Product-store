@@ -41,16 +41,16 @@ function Admin() {
         <div style={{color: '#111827'}}>
             <h2>Main Admin Section</h2>
         <p>Change user profile, password, username, email, etc.</p>
-       <table className="min-w-full border-collapse shadow-lg rounded-lg overflow-hidden">
-  <thead className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white">
-    <tr>
-      <th className="text-left py-3 px-6 font-semibold uppercase text-sm">Feature</th>
+       <table style={{borderCollapse: 'collapse', width: '100%', marginTop: '1rem', border: '1px solid #e5e7eb'}}>
+  <thead style={{backgroundColor: '#f3f4f6', borderBottom: '2px solid #e5e7eb', border: '1px solid #e5e7eb'}}>
+    <tr style={{backgroundColor: '#f3f4f6', border: '2px solid #e5e7eb'}}>
+      <th style={{backgroundColor: '#f3f4f6', border: '2px solid #e5e7eb'}} >Feature</th>
       <th className="text-left py-3 px-6 font-semibold uppercase text-sm">Description</th>
     </tr>
   </thead>
-  <tbody>
-    <tr className="bg-white hover:bg-indigo-50 transition-colors">
-      <td className="py-3 px-6 font-medium">
+  <tbody border="1" style={{border: '1px solid #e5e7eb'}}>
+    <tr style={{backgroundColor:"gray",border :'2px solid gray' }} className="bg-white hover:bg-indigo-50 transition-colors">
+      <td   style={{backgroundColor:"gray",border :'2px solid gray', padding:"3px", fontSize:"14px" }} className="py-3 px-6 font-medium">
         <span className="inline-block bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded-full font-semibold">Profile</span>
         Profile Management
       </td>

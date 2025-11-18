@@ -1,3 +1,4 @@
+import express from "express";
 import {
   registerClient,
   loginUser,
@@ -5,17 +6,24 @@ import {
   updateUserProfile,
   deleteUser,
   getAllUsers,
-  changeUserPassword,
 } from "../Controller/User.controller.js";
 
-import express from "express";
+import { protect, authorize } from "../middleware/auth.js";
+
 const router = express.Router();
-router.post("/register",registerClient);
-router.post("/login",loginUser );
-router.get("/profile", getUserProfile);
-router.put("/profile", updateUserProfile);
-router.delete("/:id", deleteUser);
-router.get("/", getAllUsers);
-router.put("/change-password", changeUserPassword);
+
+// Register a client (public)
+router.post("/register", registerClient);
+
+// Login (public)
+router.post("/login", loginUser);
+
+// Profile routes (protected: client/admin)
+router.get("/profile", protect, getUserProfile);
+router.put("/profile", protect, updateUserProfile);
+router.delete("/profile", protect, deleteUser);
+
+// Admin Only: get all users
+router.get("/all-users", protect, authorize("admin"), getAllUsers);
 
 export default router;
