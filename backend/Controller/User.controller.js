@@ -25,30 +25,7 @@ export const registerClient = async (req, res) => {
 };
 
 // Register Admin (role: admin)
-export const registerAdmin = async (req, res) => {
-  try {
-    const {name, email, password, role} = req.body;
 
-    const existingUser = await User.findOne({email});
-    if (existingUser) {
-      return res.status(400).json({message: "Email already exists"});
-    }
-
-    const newAdmin = new User({
-      name,
-      email,
-      password,
-      role: role || "admin", // Default to admin if role is not sent
-    });
-
-    await newAdmin.save();
-
-    res.status(201).json({message: "Admin registered successfully"});
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({message: "Server error"});
-  }
-};
 
 // Login (common for admin/client)
 export const loginUser = async (req, res) => {

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 
 const styles = {
   page: {
@@ -74,36 +75,46 @@ function Account() {
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  async function handleLogin(e) {
-    e.preventDefault();
-    setMessage(null);
+  const navigate = useNavigate(); // ✅ Correct
 
-    if (!email || !password) {
-      setMessage({ type: "error", text: "Please fill in all fields." });
-      return;
-    }
+async function handleLogin(e) {
+  e.preventDefault();
+  setMessage(null);
 
-    try {
-      setLoading(true);
-      // Replace with your login endpoint
-      const res = await fetch("/api/users/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) throw new Error(data.message || "Invalid credentials");
-
-      setMessage({ type: "success", text: "Login successful!" });
-      // Navigate after success if needed
-    } catch (err) {
-      setMessage({ type: "error", text: err.message });
-    } finally {
-      setLoading(false);
-    }
+  if (!email || !password) {
+    setMessage({ type: "error", text: "Please fill in all fields." });
+    return;
   }
+
+  try {
+    setLoading(true);
+
+   const res = await fetch("/api/users/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(data.message || "Invalid credentials");
+
+    // Save token
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("user", JSON.stringify(data.user));
+
+    setMessage({ type: "success", text: "Login successful!" });
+
+    // Redirect
+    navigate("/");
+
+  } catch (err) {
+    setMessage({ type: "error", text: err.message });
+  } finally {
+    setLoading(false);
+  }
+}
+
 
   return (
     <div style={styles.page}>
