@@ -1,5 +1,6 @@
 import Product from "../models/Product.model.js";
 import mongoose from "mongoose";
+
 export const getProducts = async (req, res) => {
   try {
     const newProduct = await Product.find({});
@@ -17,7 +18,15 @@ export const createProduct = async (req, res) => {
       .status(400)
       .json({success: false, message: "Please provide all fields"});
   }
-
+  if (currentUser.role !== "admin") {
+    return res
+      .status(403)
+      .json({success: false, message: "Unauthorized: Admins only"});
+  }
+  else
+  {
+    console.log("User is admin, proceeding to create product.");
+  }
   const newProduct = new Product({name, price, image});
 
   try {

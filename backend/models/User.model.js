@@ -8,6 +8,15 @@ const userSchema = new Mongoose.Schema(
       trim: true,
       unique: true,
     },
+    telephone:{
+      type: String,
+      required: true,
+      trim: true,
+      unique: true,
+    },
+    DOB:{
+      type: Date,
+    },   
     email: {
       type: String,
       required: true,
@@ -22,11 +31,14 @@ const userSchema = new Mongoose.Schema(
     },
     role: {
       type: String,
-      required: true,
-enum: [ "admin", "client" ],
+      enum: ["client", "admin"],
       default: "client",
     },
-    
+    avatar: {
+      type: String,
+      default: "",
+    },
+
   },
   {timestamps: true},
 );

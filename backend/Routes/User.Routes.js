@@ -2,28 +2,19 @@ import express from "express";
 import {
   registerClient,
   loginUser,
-  getUserProfile,
-  updateUserProfile,
-  deleteUser,
+  signoutUser,
+  changepassword,
   getAllUsers,
 } from "../Controller/User.controller.js";
-
-import { protect, authorize } from "../middleware/auth.js";
+import { authorize, protect } from "../middleware/auth.js";
 
 const router = express.Router();
 
-// Register a client (public)
+// Public
 router.post("/register", registerClient);
-
-// Login (public)
 router.post("/login", loginUser);
-
-// Profile routes (protected: client/admin)
-router.get("/profile", protect, getUserProfile);
-router.put("/profile", protect, updateUserProfile);
-router.delete("/profile", protect, deleteUser);
-
-// Admin Only: get all users
-router.get("/all-users", protect, authorize("admin"), getAllUsers);
+router.post("/signout", signoutUser);
+router.post("/changePassword", changepassword);//this route is not working right now
+router.get("/admin/users", protect, authorize("admin"), getAllUsers );
 
 export default router;

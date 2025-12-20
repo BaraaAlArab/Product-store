@@ -3,6 +3,7 @@ import {useEffect} from "react";
 import {Link} from "react-router-dom";
 import {useProductStore} from "../store/product.js";
 import ProductCard from "../components/card/productCard.jsx";
+
 function HomePage() {
   const {fetchProducts, products} = useProductStore();
   useEffect(() => {
@@ -10,6 +11,7 @@ function HomePage() {
   }, [fetchProducts]);
 
   return (
+    
     <Container maxW={`container.xl`} py={12}>
       <VStack spacing={8}>
         <Text
@@ -18,7 +20,7 @@ function HomePage() {
           color={"blue.500"}
           textAlign={"center"}
         >
-          Current Product
+          buy your favorite products here
         </Text>
         <SimpleGrid columns={{base: 1, md: 2}} spacing={10} w={"full"}>
           {products.map((product) => (
@@ -32,8 +34,8 @@ function HomePage() {
             fontWeight={"bold"}
             color={"gray.500"}
           >
-            no product found 😢{""}
-            <Link to={"/Create"}>
+            buy any product{""}
+            <Link to={"/StorePage"}>
               {" "}
               {""}
               <Text
@@ -41,7 +43,7 @@ function HomePage() {
                 color={"blue.500"}
                 _hover={{textDecoration: "underline"}}
               >
-                Create a Product
+                buy now
               </Text>
             </Link>
           </Text>

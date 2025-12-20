@@ -16,6 +16,7 @@ import {MdDelete} from "react-icons/md";
 import {CiEdit} from "react-icons/ci";
 import React, {useState} from "react";
 import {useProductStore} from "../../store/product.js";
+import { useSelector } from "react-redux";
 
 export default function ProductCard({product}) {
   const {DeleteProduct, UpdateProduct} = useProductStore();
@@ -71,7 +72,9 @@ export default function ProductCard({product}) {
       });
     }
   };
-
+const { currentUser } = useSelector((state) => state.user);
+const isAdmin = currentUser?.role === "admin";
+  
   return (
     <>
       <Box
@@ -94,16 +97,29 @@ export default function ProductCard({product}) {
             ${product.price}
           </Text>
           <HStack spacing={2}>
-            <IconButton onClick={openModal} aria-label="Edit product">
-              {<Icon as={CiEdit} boxSize={6} colorScheme="Blue" />}
-            </IconButton>
-            <IconButton
-              onClick={() => handleDeleteProduct(product._id)}
-              aria-label="Delete product"
-            >
-              <Icon as={MdDelete} boxSize={6} colorScheme="red" />
-            </IconButton>
-          </HStack>
+  {isAdmin ? (
+    <>
+      <IconButton onClick={openModal} aria-label="Edit product">
+        <Icon as={CiEdit} boxSize={6} />
+      </IconButton>
+
+      <IconButton
+        onClick={() => handleDeleteProduct(product._id)}
+        aria-label="Delete product"
+      >
+        <Icon as={MdDelete} boxSize={6} color="red.500" />
+      </IconButton>
+    </>
+  ) : (
+    <Button
+      colorScheme="green"
+      width="100%"
+      
+    >
+      Buy Now
+    </Button>
+  )}
+</HStack>
         </Box>
       </Box>
 

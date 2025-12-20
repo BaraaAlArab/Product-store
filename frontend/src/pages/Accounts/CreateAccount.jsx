@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import {  useNavigate } from "react-router-dom";
 
 const styles = {
     page: {
@@ -83,13 +84,14 @@ function CreateAccount() {
     const [password, setPassword] = useState("");
     const [confirm, setConfirm] = useState("");
     const [showPw, setShowPw] = useState(false);
-
+    const [birthdate, setBirthdate] = useState("");
+    const [phone, setPhone] = useState("");
     const [submitting, setSubmitting] = useState(false);
     const [message, setMessage] = useState(null);
     const [errorFields, setErrorFields] = useState({});
 
     const pwStrength = useMemo(() => evaluatePasswordStrength(password), [password]);
-
+    const navigate = useNavigate();
     function validate() {
         const errs = {};
         if (!name.trim()) errs.name = "Full name is required.";
@@ -112,7 +114,7 @@ function CreateAccount() {
             const res = await fetch("/api/users/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ name, email, password }),
+                body: JSON.stringify({ name, email, password, BOD: birthdate,tele:phone}),
             });
 
             if (!res.ok) {
@@ -126,13 +128,17 @@ function CreateAccount() {
             setName("");
             setEmail("");
             setPassword("");
+            setBirthdate("");
+            setPhone("");
             setConfirm("");
             setErrorFields({});
+            navigate("/Account");
         } catch (err) {
             setMessage({ type: "error", text: err.message || "An error occurred." });
         } finally {
             setSubmitting(false);
         }
+        
     }
 
     return (
@@ -177,6 +183,17 @@ function CreateAccount() {
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="Create a strong password"
                             />
+                            <div>
+                                <label>
+                                    birthdate
+                                    <input
+                                        type=" date"
+                                        style={styles.input}
+                                        onChange={(e)=> birthdate(e.target.value)}
+                                        
+                                    /> 
+                                </label>
+                            </div>
                             <button
                                 type="button"
                                 onClick={() => setShowPw((s) => !s)}

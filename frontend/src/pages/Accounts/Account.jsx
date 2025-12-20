@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
-
+import {
+  loginStart,
+  loginSuccess,
+  loginFailure,
+} from "../../redux/userSlice.js";
+import { useDispatch } from "react-redux";
 const styles = {
   page: {
     minHeight: "100vh",
@@ -74,22 +78,16 @@ function Account() {
   const [showPw, setShowPw] = useState(false);
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate(); 
 
-  const navigate = useNavigate(); // ✅ Correct
-
-async function handleLogin(e) {
+const handleLogin = async (e) => {
   e.preventDefault();
-  setMessage(null);
-
-  if (!email || !password) {
-    setMessage({ type: "error", text: "Please fill in all fields." });
-    return;
-  }
+  setLoading(true);
+  dispatch(loginStart());
 
   try {
-    setLoading(true);
-
-   const res = await fetch("/api/users/login", {
+    const res = await fetch("/api/users/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -97,23 +95,32 @@ async function handleLogin(e) {
 
     const data = await res.json();
 
-    if (!res.ok) throw new Error(data.message || "Invalid credentials");
+    if (!res.ok) {
+      dispatch(loginFailure(data.message));
+      setMessage({ type: "error", text: data.message });
+      setLoading(false);
+      return;
+    }
 
-    // Save token
+    dispatch(loginSuccess(data));
     localStorage.setItem("token", data.token);
-    localStorage.setItem("user", JSON.stringify(data.user));
 
     setMessage({ type: "success", text: "Login successful!" });
+    setLoading(false);
 
-    // Redirect
-    navigate("/");
-
+    if (data.user.role === "client"){
+      navigate("/");
+    } 
+    else if (data.user.role === "admin"){
+      navigate("/admin");
+    }
+    
   } catch (err) {
+    dispatch(loginFailure(err.message));
     setMessage({ type: "error", text: err.message });
-  } finally {
     setLoading(false);
   }
-}
+};
 
 
   return (
