@@ -1,16 +1,26 @@
 import {Container, Flex, Text, HStack, Button} from "@chakra-ui/react";
 import {CiSquarePlus} from "react-icons/ci";
 import { FiUserPlus } from "react-icons/fi";
-import {Link, Link as RouterLink} from "react-router-dom";
+import {CiLogout} from "react-icons/ci";
+import {Link, Link as RouterLink, useNavigate} from "react-router-dom";
 import {useColorMode} from "./ui/color-mode";
 import {IoMoonSharp} from "react-icons/io5";
 import {FaSun} from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../redux/userSlice.js";
 
 function NavBar() {
   const {ColorMode, toggleColorMode} = useColorMode();
   const { currentUser } = useSelector((state) => state.user);
   const isAdmin = currentUser?.role === "admin";
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    localStorage.removeItem("token");
+    navigate("/");
+  };
   return (
     <>
       <Container maxW={"1140px"} px={"4"}>
@@ -33,18 +43,23 @@ function NavBar() {
           </Text>
           <HStack spacing={2} alignItems={"center"}>
             {isAdmin &&(
-              <Link to="/Create">
+              <Link to="/create">
               <Button>
                 <CiSquarePlus fontSize={20} />
               </Button>
             </Link>
             )}
             
-            <Link to="/Account">
+            <Link to="/account">
               <Button>
                 <FiUserPlus fontSize={20} />
               </Button>
             </Link>
+            {currentUser && (
+              <Button onClick={handleLogout}>
+                <CiLogout fontSize={20} />
+              </Button>
+            )}
             <Button onClick={toggleColorMode}>
               {ColorMode === "light" ? <IoMoonSharp /> : <FaSun size="20" />}
             </Button>

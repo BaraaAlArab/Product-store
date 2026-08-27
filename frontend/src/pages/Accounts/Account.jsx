@@ -206,7 +206,7 @@ const handleLogin = async (e) => {
             <p style={{ textAlign: "center", marginTop: 18, fontSize: 13 }}>
               Don’t have an account?{" "}
               <Link
-                to="/CreateAccount"
+                to="/createAccount"
                 style={{ color: "#6366f1", textDecoration: "none", fontWeight: 500 }}
               >
                 Create one

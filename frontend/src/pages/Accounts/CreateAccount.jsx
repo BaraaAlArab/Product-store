@@ -99,6 +99,7 @@ function CreateAccount() {
         else if (!/^\S+@\S+\.\S+$/.test(email)) errs.email = "Enter a valid email address.";
         if (password.length < 8) errs.password = "Password must be at least 8 characters.";
         if (password !== confirm) errs.confirm = "Passwords do not match.";
+        if (!phone.trim()) errs.phone = "Phone number is required.";
         return errs;
     }
 
@@ -111,10 +112,10 @@ function CreateAccount() {
 
         setSubmitting(true);
         try {
-            const res = await fetch("/api/users/register", {
+const res = await fetch("/api/users/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ name, email, password, BOD: birthdate,tele:phone}),
+                body: JSON.stringify({ name, email, password, DOB: birthdate, telephone: phone }),
             });
 
             if (!res.ok) {
@@ -132,7 +133,7 @@ function CreateAccount() {
             setPhone("");
             setConfirm("");
             setErrorFields({});
-            navigate("/Account");
+            navigate("/account");
         } catch (err) {
             setMessage({ type: "error", text: err.message || "An error occurred." });
         } finally {
@@ -183,17 +184,6 @@ function CreateAccount() {
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="Create a strong password"
                             />
-                            <div>
-                                <label>
-                                    birthdate
-                                    <input
-                                        type=" date"
-                                        style={styles.input}
-                                        onChange={(e)=> birthdate(e.target.value)}
-                                        
-                                    /> 
-                                </label>
-                            </div>
                             <button
                                 type="button"
                                 onClick={() => setShowPw((s) => !s)}
@@ -230,6 +220,28 @@ function CreateAccount() {
                                 </span>
                             </div>
                         </div>
+
+                        <div style={{ height: 12 }} />
+
+                        <label style={styles.label}>Phone</label>
+                        <input
+                            type="tel"
+                            style={styles.input}
+                            value={phone}
+                            onChange={(e) => setPhone(e.target.value)}
+                            placeholder="+961 70 123 456"
+                        />
+                        {errorFields.phone && <div style={styles.error}>{errorFields.phone}</div>}
+
+                        <div style={{ height: 12 }} />
+
+                        <label style={styles.label}>Birthdate</label>
+                        <input
+                            type="date"
+                            style={styles.input}
+                            value={birthdate}
+                            onChange={(e) => setBirthdate(e.target.value)}
+                        />
 
                         <div style={{ height: 12 }} />
 

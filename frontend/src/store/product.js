@@ -1,4 +1,10 @@
 import {create} from "zustand";
+
+const authHeaders = () => {
+  const token = localStorage.getItem("token");
+  return token ? {Authorization: `Bearer ${token}`} : {};
+};
+
 export const useProductStore = create((set) => ({
   products: [],
   setProducts: (products) => set({products}),
@@ -11,13 +17,20 @@ export const useProductStore = create((set) => ({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          ...authHeaders(),
         },
         body: JSON.stringify(newProduct),
       });
       const data = await res.json();
+      if (!res.ok || !data.success) {
+        return {
+          success: false,
+          message: data.message || "Failed to create product",
+        };
+      }
       set((state) => ({products: [...state.products, data.data]}));
       return {success: true, message: "product created"};
-    } catch (error) {
+    } catch {
       return {
         success: false,
         message: "An error occurred while creating the product.",
@@ -31,14 +44,15 @@ export const useProductStore = create((set) => ({
       if (res.ok && data.success) {
         set({products: data.data});
       }
-    } catch (error) {
-      console.error("Failed to fetch products:", error);
+    } catch {
+      console.error("Failed to fetch products:");
     }
   },
   DeleteProduct: async (pid) => {
     try {
       const res = await fetch(`/api/products/${pid}`, {
         method: "DELETE",
+        headers: authHeaders(),
       });
       const data = await res.json();
       if (!res.ok || !data.success) {
@@ -51,7 +65,7 @@ export const useProductStore = create((set) => ({
         products: state.products.filter((product) => product._id !== pid),
       }));
       return {success: true, message: "Product deleted"};
-    } catch (error) {
+    } catch {
       return {
         success: false,
         message: "An error occurred while deleting the product.",
@@ -64,6 +78,7 @@ export const useProductStore = create((set) => ({
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          ...authHeaders(),
         },
         body: JSON.stringify(updatedProduct),
       });
@@ -80,7 +95,7 @@ export const useProductStore = create((set) => ({
         ),
       }));
       return {success: true, message: "Product updated"};
-    } catch (error) {
+    } catch {
       return {
         success: false,
         message: "An error occurred while updating the product.",
