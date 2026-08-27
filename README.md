@@ -18,13 +18,13 @@ A full-stack product store: Express + MongoDB backend, React (Vite) + Chakra UI 
 
 2. Configure the environment
 
-   Copy `backend/.env.example` to `backend/.env` and fill it in:
+   Copy `backend/.env.example` to `backend/.env` and fill in a real `JWT_SECRET`:
 
+   ```bash
+   cp backend/.env.example backend/.env
    ```
-   MONGO_URI=mongodb://127.0.0.1:27017/productstore
-   JWT_SECRET=<a long random string>
-   PORT=5000
-   ```
+
+   The `.env` file is gitignored — never commit real secrets.
 
 3. Create the first admin (optional, do it once)
 
