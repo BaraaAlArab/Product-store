@@ -2,7 +2,7 @@ import {Container, SimpleGrid, Text, VStack} from "@chakra-ui/react";
 import {useEffect} from "react";
 import {Link} from "react-router-dom";
 import {useProductStore} from "../store/product.js";
-import ProductCard from "../components/card/productCard.jsx";
+import ProductCard from "../components/card/ProductCard.jsx";
 
 function HomePage() {
   const {fetchProducts, products} = useProductStore();
