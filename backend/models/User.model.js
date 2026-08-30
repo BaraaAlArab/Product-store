@@ -1,5 +1,6 @@
 import Mongoose from "mongoose";
 import bcrypt from "bcryptjs";
+
 const userSchema = new Mongoose.Schema(
   {
     name: {
@@ -48,4 +49,5 @@ userSchema.pre("save", async function (next) {
   next();
 });
 const User = Mongoose.model("User", userSchema);
+
 export default User;

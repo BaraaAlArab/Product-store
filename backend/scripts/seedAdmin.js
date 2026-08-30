@@ -7,10 +7,6 @@ import User from "../models/User.model.js";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
-const ADMIN_NAME = process.argv[2] || "admin";
-const ADMIN_EMAIL = process.argv[3] || "admin@example.com";
-const ADMIN_PASSWORD = process.argv[4] || "Admin1234!";
-
 const run = async () => {
   if (!process.env.MONGO_URI) {
     console.error("MONGO_URI is missing. Create backend/.env first (see README).");
