@@ -7,9 +7,17 @@ import User from "../models/User.model.js";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
+const ADMIN_NAME = process.env.ADMIN_NAME || "Admin";
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+
 const run = async () => {
   if (!process.env.MONGO_URI) {
     console.error("MONGO_URI is missing. Create backend/.env first (see README).");
+    process.exit(1);
+  }
+  if (!ADMIN_EMAIL || !ADMIN_PASSWORD) {
+    console.error("ADMIN_EMAIL and ADMIN_PASSWORD must be set in backend/.env");
     process.exit(1);
   }
   await mongoose.connect(process.env.MONGO_URI);

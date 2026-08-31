@@ -15,7 +15,11 @@ function CreatePage() {
   const {createProduct} = useProductStore();
 
   const handleAddProduct = async () => {
-    const {success, message} = await createProduct(newProduct);
+    const productToSend = {
+      ...newProduct,
+      price: Number(newProduct.price),
+    };
+    const {success, message} = await createProduct(productToSend);
 
     if (success) {
       toaster.create({

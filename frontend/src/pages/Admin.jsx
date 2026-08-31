@@ -30,13 +30,14 @@ function Admin() {
 
   useEffect(() => {
     fetchUsers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Delete user
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure?")) return;
 
-    const response = await fetch(`/api/users/admin/delete/${id}`, {
+    const response = await fetch(`/api/users/admin/users/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -55,7 +56,7 @@ function Admin() {
   };
 
   const handleSave = async (id) => {
-    const response = await fetch(`/api/users/admin/update/${id}`, {
+    const response = await fetch(`/api/users/admin/users/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
