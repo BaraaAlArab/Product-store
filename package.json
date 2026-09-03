@@ -2,20 +2,25 @@
   "name": "productstore",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {
-    "dev": "nodemon backend/server.js"
-  },
   "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "dev": "nodemon backend/server.js",
+    "build": "npm --prefix frontend install && npm --prefix frontend run build",
+    "start": "node backend/server.js"
+  },
   "dependencies": {
     "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
     "dotenv": "^16.6.1",
     "express": "^5.1.0",
     "express-rate-limit": "^8.7.0",
-    "git": "^0.1.5",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.14.1"
   },

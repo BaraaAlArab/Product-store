@@ -18,40 +18,36 @@ function CreatePage() {
 
   const {createProduct} = useProductStore();
 
-  const handleAddProduct = async () => {
-    const numericPrice = Number(newProduct.price);
-    const numericStock = newProduct.stock === "" ? 0 : Number(newProduct.stock);
-
-    const {success, message} = await createProduct({
-      ...newProduct,
-      price: numericPrice,
-      stock: numericStock,
-    });
-
-    if (success) {
-      toaster.create({
-        title: "Product created.",
-        description: message || "Your product was successfully added.",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-      });
-      setNewProduct({name: "", price: "", image: "", description: "", category: "", stock: ""});
-    } else {
-      toaster.create({
-        title: "Error creating product.",
-        description: message || "Something went wrong.",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
-    }
-  };
-
   const handleAddClick = async () => {
     setSubmitting(true);
     try {
-      await handleAddProduct();
+      const numericPrice = Number(newProduct.price);
+      const numericStock = newProduct.stock === "" ? 0 : Number(newProduct.stock);
+
+      const {success, message} = await createProduct({
+        ...newProduct,
+        price: numericPrice,
+        stock: numericStock,
+      });
+
+      if (success) {
+        toaster.create({
+          title: "Product created.",
+          description: message || "Your product was successfully added.",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+        setNewProduct({name: "", price: "", image: "", description: "", category: "", stock: ""});
+      } else {
+        toaster.create({
+          title: "Error creating product.",
+          description: message || "Something went wrong.",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
     } finally {
       setSubmitting(false);
     }

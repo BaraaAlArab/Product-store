@@ -8,7 +8,6 @@ import {
   Heading,
   HStack,
   Input,
-  Select,
   Table,
   Text,
   VStack,
@@ -30,7 +29,6 @@ function Admin() {
   useEffect(() => {
     if (currentUser && !isAdmin) {
       navigate("/");
-      return;
     }
   }, [currentUser, isAdmin, navigate]);
 

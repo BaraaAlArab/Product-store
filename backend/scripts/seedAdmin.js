@@ -16,6 +16,10 @@ const run = async () => {
     console.error("MONGO_URI is missing. Create backend/.env first (see README).");
     process.exit(1);
   }
+  if (!ADMIN_EMAIL || !ADMIN_PASSWORD) {
+    console.error("ADMIN_EMAIL and ADMIN_PASSWORD must be set in backend/.env");
+    process.exit(1);
+  }
   await mongoose.connect(process.env.MONGO_URI);
 
   const existing = await User.findOne({ email: ADMIN_EMAIL });

@@ -41,7 +41,7 @@ export const useProductStore = create((set) => ({
   fetchProducts: async () => {
     set({loading: true});
     try {
-      const res = await fetch("/api/products");
+      const res = await fetch("/api/products", {cache: "no-store"});
       const data = await res.json();
       if (res.ok && data.success) {
         set({products: data.data});

@@ -1,16 +1,27 @@
-import React from 'react'
+import { Container, Text, VStack } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 function Client() {
+  const { currentUser } = useSelector((state) => state.user);
+
   return (
-    <div>
-      {/* Client Page Content */}
-      if (current user?.isAdmin){
-        // Admin-specific content or redirection can be handled here
-        // can add and delete products but the client cant delete or add products
-        
-      }
-    </div>
-  )
+    <Container maxW="container.xl" py={12}>
+      <VStack spacing={8}>
+        <Text fontSize="2xl" fontWeight="bold">
+          Welcome, {currentUser?.name || "Client"}!
+        </Text>
+        <Text fontSize="lg" color="gray.500">
+          Browse our products and find what you love.
+        </Text>
+        <Link to="/StorePage">
+          <Text color="blue.500" _hover={{ textDecoration: "underline" }}>
+            Go to Store
+          </Text>
+        </Link>
+      </VStack>
+    </Container>
+  );
 }
 
-export default Client
+export default Client;
