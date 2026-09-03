@@ -10,12 +10,13 @@ import {
   deleteUser,
 } from "../Controller/User.controller.js";
 import { authorize, protect } from "../middleware/auth.js";
+import { authLimiter } from "../middleware/rateLimit.js";
 
 const router = express.Router();
 
 // Public
-router.post("/register", registerClient);
-router.post("/login", loginUser);
+router.post("/register", authLimiter, registerClient);
+router.post("/login", authLimiter, loginUser);
 router.post("/signout", signoutUser);
 
 // Authenticated

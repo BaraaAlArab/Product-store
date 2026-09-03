@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/userSlice.js";
 
 function NavBar() {
-  const {ColorMode, toggleColorMode} = useColorMode();
+  const {colorMode, toggleColorMode} = useColorMode();
   const { currentUser } = useSelector((state) => state.user);
   const isAdmin = currentUser?.role === "admin";
   const dispatch = useDispatch();
@@ -49,19 +49,28 @@ function NavBar() {
               </Button>
             </Link>
             )}
-            
-            <Link to="/account">
-              <Button>
-                <FiUserPlus fontSize={20} />
-              </Button>
-            </Link>
-            {currentUser && (
-              <Button onClick={handleLogout}>
-                <CiLogout fontSize={20} />
-              </Button>
+
+            {currentUser ? (
+              <>
+                <Link to="/profile">
+                  <Button variant="outline">
+                    {currentUser.name || "Profile"}
+                  </Button>
+                </Link>
+                <Button onClick={handleLogout} aria-label="Logout">
+                  <CiLogout fontSize={20} />
+                </Button>
+              </>
+            ) : (
+              <Link to="/account">
+                <Button aria-label="Sign in" variant="outline">
+                  <FiUserPlus fontSize={20} /> Sign in
+                </Button>
+              </Link>
             )}
-            <Button onClick={toggleColorMode}>
-              {ColorMode === "light" ? <IoMoonSharp /> : <FaSun size="20" />}
+
+            <Button onClick={toggleColorMode} aria-label="Toggle color mode">
+              {colorMode === "light" ? <IoMoonSharp /> : <FaSun size="20" />}
             </Button>
           </HStack>
         </Flex>

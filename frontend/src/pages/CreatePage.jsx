@@ -1,4 +1,4 @@
-import {Box, Button, Container, Heading, Input, VStack} from "@chakra-ui/react";
+import {Button, Container, Heading, Input, Textarea, VStack} from "@chakra-ui/react";
 import {toaster} from "../components/ui/toaster.jsx";
 import {useColorModeValue} from "../components/ui/color-mode";
 
@@ -10,12 +10,23 @@ function CreatePage() {
     name: "",
     price: "",
     image: "",
+    description: "",
+    category: "",
+    stock: "",
   });
+  const [submitting, setSubmitting] = useState(false);
 
   const {createProduct} = useProductStore();
 
   const handleAddProduct = async () => {
-    const {success, message} = await createProduct(newProduct);
+    const numericPrice = Number(newProduct.price);
+    const numericStock = newProduct.stock === "" ? 0 : Number(newProduct.stock);
+
+    const {success, message} = await createProduct({
+      ...newProduct,
+      price: numericPrice,
+      stock: numericStock,
+    });
 
     if (success) {
       toaster.create({
@@ -25,8 +36,7 @@ function CreatePage() {
         duration: 5000,
         isClosable: true,
       });
-      // Optionally clear form
-      setNewProduct({name: "", price: "", image: ""});
+      setNewProduct({name: "", price: "", image: "", description: "", category: "", stock: ""});
     } else {
       toaster.create({
         title: "Error creating product.",
@@ -35,7 +45,15 @@ function CreatePage() {
         duration: 5000,
         isClosable: true,
       });
-      setNewProduct({name: "", price: "", image: ""});
+    }
+  };
+
+  const handleAddClick = async () => {
+    setSubmitting(true);
+    try {
+      await handleAddProduct();
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -45,45 +63,64 @@ function CreatePage() {
         <Heading as={"h1"} size={"2xl"} textAlign={"center"} mb={8}>
           Create new Product
         </Heading>
-        <Box
+        <VStack
           w={"full"}
           bg={useColorModeValue("white", "gray.800")}
           p={6}
           rounded={"lg"}
           shadow={"md"}
+          spacing={4}
         >
-          <VStack spacing={4}>
-            <Input
-              type="text"
-              placeholder="Product Name"
-              name="name"
-              value={newProduct.name}
-              onChange={(e) =>
-                setNewProduct({...newProduct, name: e.target.value})
-              }
-            />
-            <Input
-              type="number"
-              placeholder="Product price"
-              name="price"
-              value={newProduct.price}
-              onChange={(e) =>
-                setNewProduct({...newProduct, price: e.target.value})
-              }
-            />
-            <Input
-              placeholder="Image URL"
-              name="image"
-              value={newProduct.image}
-              onChange={(e) =>
-                setNewProduct({...newProduct, image: e.target.value})
-              }
-            />
-            <Button colorScheme="blue" onClick={handleAddProduct} w="full">
-              Add Product
-            </Button>
-          </VStack>
-        </Box>
+          <Input
+            type="text"
+            placeholder="Product Name"
+            value={newProduct.name}
+            onChange={(e) =>
+              setNewProduct({...newProduct, name: e.target.value})
+            }
+          />
+          <Input
+            type="number"
+            placeholder="Product price"
+            value={newProduct.price}
+            onChange={(e) =>
+              setNewProduct({...newProduct, price: e.target.value})
+            }
+          />
+          <Input
+            placeholder="Image URL"
+            value={newProduct.image}
+            onChange={(e) =>
+              setNewProduct({...newProduct, image: e.target.value})
+            }
+          />
+          <Input
+            placeholder="Category"
+            value={newProduct.category}
+            onChange={(e) =>
+              setNewProduct({...newProduct, category: e.target.value})
+            }
+          />
+          <Input
+            type="number"
+            min="0"
+            placeholder="Stock (units available)"
+            value={newProduct.stock}
+            onChange={(e) =>
+              setNewProduct({...newProduct, stock: e.target.value})
+            }
+          />
+          <Textarea
+            placeholder="Description"
+            value={newProduct.description}
+            onChange={(e) =>
+              setNewProduct({...newProduct, description: e.target.value})
+            }
+          />
+          <Button colorScheme="blue" onClick={handleAddClick} w="full" loading={submitting}>
+            Add Product
+          </Button>
+        </VStack>
       </VStack>
     </Container>
   );

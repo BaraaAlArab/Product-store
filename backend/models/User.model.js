@@ -7,13 +7,11 @@ const userSchema = new Mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      unique: true,
     },
     telephone:{
       type: String,
       required: true,
       trim: true,
-      unique: true,
     },
     DOB:{
       type: Date,
@@ -29,6 +27,15 @@ const userSchema = new Mongoose.Schema(
       type: String,
       select: false,
       required: true,
+      minlength: [8, "Password must be at least 8 characters"],
+      validate: {
+        validator: function (value) {
+          if (!value || value.length < 8) return false;
+          return /[A-Z]/.test(value) && /[0-9]/.test(value);
+        },
+        message:
+          "Password must be at least 8 characters and contain an uppercase letter and a number",
+      },
     },
     role: {
       type: String,

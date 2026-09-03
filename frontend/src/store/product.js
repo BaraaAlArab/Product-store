@@ -7,10 +7,11 @@ const authHeaders = () => {
 
 export const useProductStore = create((set) => ({
   products: [],
+  loading: false,
   setProducts: (products) => set({products}),
   createProduct: async (newProduct) => {
-    if (!newProduct.name || !newProduct.image || !newProduct.price) {
-      return {success: false, message: "Please fill all the fields.."};
+    if (!newProduct.name || !newProduct.image || newProduct.price === "") {
+      return {success: false, message: "Please fill in name, price and image."};
     }
     try {
       const res = await fetch("/api/products", {
@@ -38,6 +39,7 @@ export const useProductStore = create((set) => ({
     }
   },
   fetchProducts: async () => {
+    set({loading: true});
     try {
       const res = await fetch("/api/products");
       const data = await res.json();
@@ -46,6 +48,8 @@ export const useProductStore = create((set) => ({
       }
     } catch {
       console.error("Failed to fetch products:");
+    } finally {
+      set({loading: false});
     }
   },
   DeleteProduct: async (pid) => {
@@ -73,6 +77,14 @@ export const useProductStore = create((set) => ({
     }
   },
   UpdateProduct: async (pid, updatedProduct) => {
+    const payload = {
+      name: updatedProduct.name,
+      price: Number(updatedProduct.price),
+      image: updatedProduct.image,
+      category: updatedProduct.category,
+      description: updatedProduct.description,
+      stock: Number(updatedProduct.stock ?? 0),
+    };
     try {
       const res = await fetch(`/api/products/${pid}`, {
         method: "PUT",
@@ -80,7 +92,7 @@ export const useProductStore = create((set) => ({
           "Content-Type": "application/json",
           ...authHeaders(),
         },
-        body: JSON.stringify(updatedProduct),
+        body: JSON.stringify(payload),
       });
       const data = await res.json();
       if (!res.ok || !data.success) {
@@ -91,7 +103,7 @@ export const useProductStore = create((set) => ({
       }
       set((state) => ({
         products: state.products.map((product) =>
-          product._id === pid ? {...product, ...updatedProduct} : product,
+          product._id === pid ? {...product, ...payload} : product,
         ),
       }));
       return {success: true, message: "Product updated"};

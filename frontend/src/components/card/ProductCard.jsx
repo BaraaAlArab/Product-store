@@ -8,6 +8,7 @@ import {
   Image,
   Input,
   Text,
+  Textarea,
   VStack,
 } from "@chakra-ui/react";
 import {useColorMode} from "../ui/color-mode";
@@ -83,18 +84,28 @@ const isAdmin = currentUser?.role === "admin";
         overflow="hidden"
         transition="all 0.3s"
         _hover={{transform: "translateY(-5px)", shadow: "xl"}}
-        width="39%"
-        maxW="sm"
+        bg="white"
         p={4}
         m={4}
       >
-        <Image src={product.image} alt={product.name} h={56} />
+        <Image src={product.image} alt={product.name} h={56} w="full" objectFit="cover" />
         <Box p={4}>
           <Heading as="h3" size="md" mb={2}>
             {product.name}
           </Heading>
-          <Text fontWeight="bold" fontSize="xl" mb={4}>
+          {product.category && (
+            <Text fontSize="sm" color="gray.500" mb={1}>
+              {product.category}
+            </Text>
+          )}
+          <Text fontSize="sm" color="gray.600" mb={2} noOfLines={2}>
+            {product.description || "No description"}
+          </Text>
+          <Text fontWeight="bold" fontSize="xl" mb={1}>
             ${product.price}
+          </Text>
+          <Text fontSize="sm" mb={4} color={product.stock > 0 ? "green.500" : "red.500"}>
+            {product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}
           </Text>
           <HStack spacing={2}>
   {isAdmin ? (
@@ -161,6 +172,34 @@ const isAdmin = currentUser?.role === "admin";
                   setUpdatedProduct({...updatedProduct, image: e.target.value})
                 }
               />
+              <Input
+                placeholder="Category"
+                name="category"
+                value={updatedProduct.category || ""}
+                onChange={(e) =>
+                  setUpdatedProduct({...updatedProduct, category: e.target.value})
+                }
+              />
+              <Input
+                placeholder="Stock"
+                name="stock"
+                type="number"
+                min="0"
+                value={updatedProduct.stock ?? 0}
+                onChange={(e) =>
+                  setUpdatedProduct({...updatedProduct, stock: e.target.value})
+                }
+              />
+              <Box w="full">
+                <Textarea
+                  placeholder="Description"
+                  name="description"
+                  value={updatedProduct.description || ""}
+                  onChange={(e) =>
+                    setUpdatedProduct({...updatedProduct, description: e.target.value})
+                  }
+                />
+              </Box>
             </VStack>
             <div style={{marginTop: "1.5rem", textAlign: "right"}}>
               <Button

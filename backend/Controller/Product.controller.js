@@ -11,19 +11,33 @@ export const getProducts = async (req, res) => {
   }
 };
 export const createProduct = async (req, res) => {
-  const {name, price, image} = req.body;
+  const {name, price, image, description, category, stock} = req.body;
 
-  if (!name || !price || !image) {
+  if (!name || price === undefined || !image) {
     return res
       .status(400)
-      .json({success: false, message: "Please provide all fields"});
+      .json({success: false, message: "Please provide name, price and image"});
   }
-  const newProduct = new Product({name, price, image});
+  if (typeof price !== "number" || price < 0) {
+    return res
+      .status(400)
+      .json({success: false, message: "Price must be a non-negative number"});
+  }
+  if (stock !== undefined && (typeof stock !== "number" || stock < 0)) {
+    return res
+      .status(400)
+      .json({success: false, message: "Stock must be a non-negative number"});
+  }
+
+  const newProduct = new Product({name, price, image, description, category, stock});
 
   try {
     await newProduct.save();
     res.status(201).json({success: true, data: newProduct});
   } catch (error) {
+    if (error.name === "ValidationError") {
+      return res.status(400).json({success: false, message: error.message});
+    }
     console.error("Error creating product:", error.message);
     res.status(500).json({success: false, message: "Server Error"});
   }
@@ -36,12 +50,31 @@ export const updateProduct = async (req, res) => {
       .status(404)
       .json({success: false, message: "no product found with that id..."});
   }
+  if (products.price !== undefined && (typeof products.price !== "number" || products.price < 0)) {
+    return res
+      .status(400)
+      .json({success: false, message: "Price must be a non-negative number"});
+  }
+  if (products.stock !== undefined && (typeof products.stock !== "number" || products.stock < 0)) {
+    return res
+      .status(400)
+      .json({success: false, message: "Stock must be a non-negative number"});
+  }
   try {
     const UpdatedProduct = await Product.findByIdAndUpdate(id, products, {
       new: true,
+      runValidators: true,
     });
+    if (!UpdatedProduct) {
+      return res
+        .status(404)
+        .json({success: false, message: "no product found with that id..."});
+    }
     res.status(200).json({success: true, data: UpdatedProduct});
   } catch (error) {
+    if (error.name === "ValidationError") {
+      return res.status(400).json({success: false, message: error.message});
+    }
     res.status(500).json({success: false, message: "Server error"});
   }
 };

@@ -12,6 +12,17 @@ app.use(express.json()); // Accept JSON data
 app.use("/api/users", User);
 app.use("/api/products", products);
 
+// 404 handler for unknown API routes
+app.use("/api", (req, res) => {
+  res.status(404).json({ message: "Route not found" });
+});
+
+// Central error handler
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(err.status || 500).json({ message: err.message || "Server error" });
+});
+
 app.listen(PORT, () => {
   connectDB();
   console.log("server started at http://localhost:" + PORT);

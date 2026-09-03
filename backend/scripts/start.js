@@ -5,7 +5,7 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const backendDir = path.resolve(__dirname, "..");
 const envPath = path.join(backendDir, ".env");
-const examplePath = path.join(backendDir, ".env");
+const examplePath = path.join(backendDir, ".env.example");
 
 if (fs.existsSync(envPath)) {
   console.log("backend/.env already exists - leaving it untouched.");

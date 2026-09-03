@@ -9,12 +9,16 @@ export const protect = async (req, res, next) =>   {
 
   try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = decoded;
+      if (!decoded.id) {
+          return res.status(401).json({message: "Invalid token"});
+      }
+      req.user = { id: decoded.id, role: decoded.role };
 
       const user = await User.findById(req.user.id);
       if (!user) {
           return res.status(401).json({message: "User not found"});
       }
+      // Use the DB role as the source of truth (role may have changed since login)
       req.user.role = user.role;
       next();
   } catch (error) {
