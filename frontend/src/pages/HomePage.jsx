@@ -9,7 +9,12 @@ function HomePage() {
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
-
+function searchProducts(searchTerm) {
+    const lowerCaseSearchTerm = searchTerm.toLowerCase();
+    return products.filter((product) =>
+      product.name.toLowerCase().includes(lowerCaseSearchTerm)
+    );
+  }
   return (
     <Container maxW={`container.xl`} py={12}>
       <VStack spacing={8}>
@@ -35,7 +40,17 @@ function HomePage() {
             ))}
           </SimpleGrid>
         )}
-
+        <div width={"full"} display={"flex"} justifyContent={"center"} mt={8}>
+        <input type="text" placeholder="Search products..." onChange={(e) => searchProducts(e.target.value)} style={{padding: "8px", borderRadius: "4px", border: "1px solid #ccc", width: "300px"}} />  
+        <select name="" id="">
+          <option value="">All Categories</option>
+          <option value="electronics">Electronics</option>
+          <option value="clothing">Clothing</option>
+          <option value="books">Books</option>
+        </select>
+        <input type="submit" value="Search" style={{padding: "8px 16px", marginLeft: "8px", borderRadius: "4px", border: "none", backgroundColor: "#3182ce", color: "#fff", cursor: "pointer"}} />
+        
+        </div>
         {!loading && products.length === 0 && (
           <Text
             fontSize={`xl`}
@@ -50,6 +65,7 @@ function HomePage() {
               </Text>
             </Link>
           </Text>
+
         )}
       </VStack>
     </Container>
