@@ -8,7 +8,7 @@ export default defineConfig({
     react(), 
     tsconfigPaths
   ,tailwindcss()],
-  base:"./",
+  base:"/",
   server:{
     proxy:{
       "/api":{
