@@ -12,7 +12,7 @@
   },
   "scripts": {
     "dev": "nodemon backend/server.js",
-    "build": "npm --prefix frontend install && npm --prefix frontend run build",
+    "build": "npm --prefix frontend install --include=dev && npm --prefix frontend run build",
     "start": "node backend/server.js"
   },
   "dependencies": {
