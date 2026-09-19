@@ -3,15 +3,25 @@ import mongoose from "mongoose";
 
 export const getProducts = async (req, res) => {
   try {
-    const newProduct = await Product.find({});
-    res.status(200).json({success: true, data: newProduct});
+    const {search, category, limit = 50} = req.query;
+    const filter = {};
+
+    if (search) {
+      filter.name = {$regex: search, $options: "i"};
+    }
+    if (category) {
+      filter.category = category;
+    }
+
+    const products = await Product.find(filter).sort({createdAt: -1}).limit(Number(limit));
+    res.status(200).json({success: true, data: products});
   } catch (error) {
     console.log("error in fetching products:", error.message);
     res.status(500).json({success: false, message: "servererror"});
   }
 };
 export const createProduct = async (req, res) => {
-  const {name, price, image, description, category, stock} = req.body;
+  const {name, price, image, description, category, stock, oldPrice, onSale} = req.body;
 
   if (!name || price === undefined || !image) {
     return res
@@ -28,8 +38,13 @@ export const createProduct = async (req, res) => {
       .status(400)
       .json({success: false, message: "Stock must be a non-negative number"});
   }
+  if (oldPrice !== undefined && (typeof oldPrice !== "number" || oldPrice < 0)) {
+    return res
+      .status(400)
+      .json({success: false, message: "Old price must be a non-negative number"});
+  }
 
-  const newProduct = new Product({name, price, image, description, category, stock});
+  const newProduct = new Product({name, price, image, description, category, stock, oldPrice, onSale});
 
   try {
     await newProduct.save();
@@ -59,6 +74,11 @@ export const updateProduct = async (req, res) => {
     return res
       .status(400)
       .json({success: false, message: "Stock must be a non-negative number"});
+  }
+  if (products.oldPrice !== undefined && (typeof products.oldPrice !== "number" || products.oldPrice < 0)) {
+    return res
+      .status(400)
+      .json({success: false, message: "Old price must be a non-negative number"});
   }
   try {
     const UpdatedProduct = await Product.findByIdAndUpdate(id, products, {

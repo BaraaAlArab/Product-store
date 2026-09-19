@@ -1,9 +1,18 @@
 ﻿import { useEffect, useState } from "react";
-import { Box, Button, Heading, VStack, HStack, Image, Text } from "@chakra-ui/react";
-import { useColorModeValue } from "../../components/ui/color-mode";
+import { Box, Button, Heading, VStack, HStack, Image, Text, Badge, Separator } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
+
+const statusColor = {
+  pending: "gray",
+  processing: "blue",
+  shipped: "purple",
+  delivered: "green",
+  cancelled: "red",
+};
 
 function ProfilePage() {
   const [user, setUser] = useState(null);
+  const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -17,16 +26,21 @@ function ProfilePage() {
     })
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => setUser(data))
-      .catch(() => setUser(null))
+      .catch(() => setUser(null));
+
+    fetch("/api/orders/my-orders", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((res) => (res.ok ? res.json() : { orders: [] }))
+      .then((data) => setOrders(data.orders || []))
+      .catch(() => setOrders([]))
       .finally(() => setLoading(false));
   }, []);
-
-  const cardBg = useColorModeValue("white", "gray.800");
 
   if (loading) return <Text p={6}>Loading...</Text>;
 
   return (
-    <Box maxW="6xl" mx="auto" p={6}>
+    <Box maxW="6xl" mx="auto" p={6} className="anim-fade-in-up">
       <HStack gap={6} mb={8}>
         {user?.avatar ? (
           <Image
@@ -44,6 +58,8 @@ function ProfilePage() {
             display="flex"
             alignItems="center"
             justifyContent="center"
+            bg="white"
+            _dark={{ bg: "gray.800" }}
           >
             <Text fontSize="3xl">{user?.name?.[0]?.toUpperCase() || "?"}</Text>
           </Box>
@@ -61,7 +77,7 @@ function ProfilePage() {
         gridTemplateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
         gap={6}
       >
-        <Box bg={cardBg} p={6} rounded="lg" shadow="md">
+        <Box bg="white" _dark={{ bg: "gray.800" }} p={6} rounded="lg" shadow="md">
           <Heading size="md" mb={4}>
             Profile Information
           </Heading>
@@ -80,21 +96,26 @@ function ProfilePage() {
           </Text>
         </Box>
 
-        <Box bg={cardBg} p={6} rounded="lg" shadow="md">
+        <Box bg="white" _dark={{ bg: "gray.800" }} p={6} rounded="lg" shadow="md">
           <Heading size="md" mb={4}>
-            Security
+            Quick links
           </Heading>
           <VStack align="stretch" spacing={3}>
-            <Button>Change Password</Button>
-            <Button>Enable 2FA</Button>
-            <Button colorScheme="red" variant="outline">
-              Deactivate Account
-            </Button>
+            <Link to="/track">
+              <Button w="full" variant="outline">Track an order</Button>
+            </Link>
+            <Link to="/documentation">
+              <Button w="full" variant="outline">Documentation</Button>
+            </Link>
+            <Link to="/contact">
+              <Button w="full" variant="outline">Contact support</Button>
+            </Link>
           </VStack>
         </Box>
 
         <Box
-          bg={cardBg}
+          bg="white"
+          _dark={{ bg: "gray.800" }}
           p={6}
           rounded="lg"
           shadow="md"
@@ -103,10 +124,58 @@ function ProfilePage() {
           <Heading size="md" mb={4}>
             Purchase History
           </Heading>
-          <Text color="gray.500">No purchases yet.</Text>
+          {orders.length === 0 ? (
+            <Text color="gray.500">No purchases yet.</Text>
+          ) : (
+            <VStack align="stretch" spacing={4}>
+              {orders.map((order) => (
+                <Box key={order._id} p={4} rounded="lg" border="1px solid" borderColor="gray.200" _dark={{ borderColor: "gray.700" }}>
+                  <HStack justify="space-between" mb={3} wrap="wrap" gap={2}>
+                    <Box>
+                      <Text fontSize="sm" color="gray.500">#{order.trackingNumber}</Text>
+                      <Text fontSize="xs" color="gray.500">
+                        {new Date(order.createdAt).toLocaleDateString()}
+                      </Text>
+                    </Box>
+                    <Badge colorScheme={statusColor[order.status] || "gray"} rounded="full" px={2}>
+                      {order.status}
+                    </Badge>
+                  </HStack>
+                  {order.items.map((item) => (
+                    <FlexRow key={item._id} item={item} />
+                  ))}
+                  <Separator my={3} />
+                  <HStack justify="space-between">
+                    <Text fontSize="sm" color="gray.500">Total</Text>
+                    <Text fontWeight="bold">${order.total}</Text>
+                  </HStack>
+                </Box>
+              ))}
+            </VStack>
+          )}
         </Box>
       </Box>
     </Box>
+  );
+}
+
+function FlexRow({ item }) {
+  return (
+    <HStack gap={3} mb={1}>
+      <Box
+        bgImage={`url(${item.image})`}
+        bgSize="cover"
+        bgPosition="center"
+        boxSize="40px"
+        rounded="md"
+        flexShrink={0}
+      />
+      <Box flex="1">
+        <Text fontSize="sm" fontWeight="600">{item.name}</Text>
+        <Text fontSize="xs" color="gray.500">Qty {item.quantity}</Text>
+      </Box>
+      <Text fontSize="sm" fontWeight="600">${item.price * item.quantity}</Text>
+    </HStack>
   );
 }
 

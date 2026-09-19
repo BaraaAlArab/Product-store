@@ -143,8 +143,8 @@ const res = await fetch("/api/users/register", {
     }
 
     return (
-        <div style={styles.page}>
-            <div style={styles.card}>
+        <div style={styles.page} className="anim-fade-in-up">
+            <div style={styles.card} className="anim-scale-in">
                 <main style={styles.left}>
                     <h1 style={{ ...styles.heading, color: "black" }}>
                         Create an account

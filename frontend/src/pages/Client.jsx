@@ -6,7 +6,7 @@ function Client() {
   const { currentUser } = useSelector((state) => state.user);
 
   return (
-    <Container maxW="container.xl" py={12}>
+    <Container maxW="container.xl" py={12} className="anim-fade-in-up">
       <VStack spacing={8}>
         <Text fontSize="2xl" fontWeight="bold">
           Welcome, {currentUser?.name || "Client"}!

@@ -32,6 +32,14 @@ const productSchema = new mongoose.Schema(
       default: 0,
       min: [0, "Stock cannot be negative"],
     },
+    oldPrice: {
+      type: Number,
+      min: [0, "Old price cannot be negative"],
+    },
+    onSale: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true, //created at, updated at.

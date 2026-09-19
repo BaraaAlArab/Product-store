@@ -6,12 +6,17 @@ import { fileURLToPath } from "url";
 import express from "express";
 import products from "./Routes/Product.Routes.js";
 import User from "./Routes/User.Routes.js";
+import orders from "./Routes/Order.Routes.js";
 
 import { connectDB } from "./config/db.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.PORT || 5000;
 const app = express();
+
+if (process.env.NODE_ENV === "production") {
+  app.set("trust proxy", 1); // Behind a proxy (Render), so req.ip is the real client
+}
 
 app.use(cors());
 app.use(express.json()); // Accept JSON data
@@ -24,6 +29,7 @@ app.use("/api", (req, res, next) => {
 
 app.use("/api/users", User);
 app.use("/api/products", products);
+app.use("/api/orders", orders);
 
 // In production, serve the built React frontend from the same server
 const frontendDist = path.resolve(__dirname, "..", "frontend", "dist");

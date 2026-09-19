@@ -1,27 +1,22 @@
-import React from 'react'
+import {Container, Heading, Text, VStack} from "@chakra-ui/react";
+import {Link} from "react-router-dom";
 
 function StorePage() {
   return (
-    <div>
-      
-        <h1>Purchase Page</h1>
-        <p>This is the purchase page content.</p>
-        <div>
-        <h2>Purchase Details</h2>
-        <p>Here you can find all the details regarding your purchases.</p>
-        <table>
-            <thead>
-                <tr>
-                    <th>Item</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                </tr>
-            </thead>
-            
-        </table>
-        </div>
-    </div>
-  )
+    <Container maxW="container.xl" py={12} className="anim-fade-in-up">
+      <VStack spacing={8}>
+        <Heading as="h1" size="2xl">
+          Purchase Page
+        </Heading>
+        <Text fontSize="lg" color="gray.500">
+          This is the purchase page content.
+        </Text>
+        <Text color="blue.500">
+          <Link to="/">Back to store</Link>
+        </Text>
+      </VStack>
+    </Container>
+  );
 }
 
-export default StorePage
+export default StorePage;

@@ -84,6 +84,7 @@ export const useProductStore = create((set) => ({
       category: updatedProduct.category,
       description: updatedProduct.description,
       stock: Number(updatedProduct.stock ?? 0),
+      oldPrice: updatedProduct.oldPrice ? Number(updatedProduct.oldPrice) : undefined,
     };
     try {
       const res = await fetch(`/api/products/${pid}`, {

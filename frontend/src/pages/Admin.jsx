@@ -65,9 +65,9 @@ function Admin() {
     });
     if (response.ok) {
       setUsers(users.filter((u) => u._id !== id));
-      toaster.create({ title: "User deleted.", status: "success", duration: 3000 });
+      toaster.create({ title: "User deleted.", type: "success", duration: 3000 });
     } else {
-      toaster.create({ title: "Failed to delete user.", status: "error", duration: 3000 });
+      toaster.create({ title: "Failed to delete user.", type: "error", duration: 3000 });
     }
   };
 
@@ -89,9 +89,9 @@ function Admin() {
     if (response.ok) {
       setUsers(users.map((u) => (u._id === id ? { ...u, ...editForm } : u)));
       setEditingUserId(null);
-      toaster.create({ title: "User updated.", status: "success", duration: 3000 });
+      toaster.create({ title: "User updated.", type: "success", duration: 3000 });
     } else {
-      toaster.create({ title: "Failed to update user.", status: "error", duration: 3000 });
+      toaster.create({ title: "Failed to update user.", type: "error", duration: 3000 });
     }
     setSaving(false);
   };
@@ -102,7 +102,7 @@ function Admin() {
   if (error) return <Text p={8} color="red.500">Error: {error}</Text>;
 
   return (
-    <Container maxW="container.lg" py={8}>
+    <Container maxW="container.lg" py={8} className="anim-fade-in-up">
       <VStack align="stretch" spacing={6}>
         <Heading as="h1" size="lg">Admin Dashboard</Heading>
 

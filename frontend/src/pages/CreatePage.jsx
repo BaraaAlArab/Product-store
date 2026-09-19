@@ -13,37 +13,41 @@ function CreatePage() {
     description: "",
     category: "",
     stock: "",
+    oldPrice: "",
   });
   const [submitting, setSubmitting] = useState(false);
 
   const {createProduct} = useProductStore();
+  const bg = useColorModeValue("white", "gray.800");
 
   const handleAddClick = async () => {
     setSubmitting(true);
     try {
       const numericPrice = Number(newProduct.price);
       const numericStock = newProduct.stock === "" ? 0 : Number(newProduct.stock);
+      const numericOldPrice = newProduct.oldPrice === "" ? undefined : Number(newProduct.oldPrice);
 
       const {success, message} = await createProduct({
         ...newProduct,
         price: numericPrice,
         stock: numericStock,
+        oldPrice: numericOldPrice,
       });
 
       if (success) {
         toaster.create({
           title: "Product created.",
           description: message || "Your product was successfully added.",
-          status: "success",
+          type: "success",
           duration: 5000,
           isClosable: true,
         });
-        setNewProduct({name: "", price: "", image: "", description: "", category: "", stock: ""});
+        setNewProduct({name: "", price: "", image: "", description: "", category: "", stock: "", oldPrice: ""});
       } else {
         toaster.create({
           title: "Error creating product.",
           description: message || "Something went wrong.",
-          status: "error",
+          type: "error",
           duration: 5000,
           isClosable: true,
         });
@@ -54,14 +58,14 @@ function CreatePage() {
   };
 
   return (
-    <Container maxW={"container.sm"}>
+    <Container maxW={"container.sm"} className="anim-fade-in-up">
       <VStack spacing={8}>
         <Heading as={"h1"} size={"2xl"} textAlign={"center"} mb={8}>
           Create new Product
         </Heading>
         <VStack
           w={"full"}
-          bg={useColorModeValue("white", "gray.800")}
+          bg={bg}
           p={6}
           rounded={"lg"}
           shadow={"md"}
@@ -81,6 +85,15 @@ function CreatePage() {
             value={newProduct.price}
             onChange={(e) =>
               setNewProduct({...newProduct, price: e.target.value})
+            }
+          />
+          <Input
+            type="number"
+            min="0"
+            placeholder="Old price before discount (optional, shows sale)"
+            value={newProduct.oldPrice}
+            onChange={(e) =>
+              setNewProduct({...newProduct, oldPrice: e.target.value})
             }
           />
           <Input

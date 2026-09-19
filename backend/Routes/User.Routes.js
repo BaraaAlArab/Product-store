@@ -8,6 +8,8 @@ import {
   getAllUsers,
   updateUser,
   deleteUser,
+  forgotPassword,
+  resetPassword,
 } from "../Controller/User.controller.js";
 import { authorize, protect } from "../middleware/auth.js";
 import { authLimiter } from "../middleware/rateLimit.js";
@@ -18,6 +20,8 @@ const router = express.Router();
 router.post("/register", authLimiter, registerClient);
 router.post("/login", authLimiter, loginUser);
 router.post("/signout", signoutUser);
+router.post("/forgot-password", authLimiter, forgotPassword);
+router.post("/reset-password/:token", authLimiter, resetPassword);
 
 // Authenticated
 router.get("/me", protect, getMe);

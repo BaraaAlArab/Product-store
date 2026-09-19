@@ -1,6 +1,8 @@
 import {
   Box,
   Button,
+  Dialog,
+  Flex,
   Heading,
   HStack,
   Icon,
@@ -10,20 +12,22 @@ import {
   Text,
   Textarea,
   VStack,
+  Badge,
 } from "@chakra-ui/react";
-import {useColorMode} from "../ui/color-mode";
 import {toaster} from "../ui/toaster";
 import {MdDelete} from "react-icons/md";
 import {CiEdit} from "react-icons/ci";
+import {HiOutlineShoppingBag, HiOutlineSparkles} from "react-icons/hi2";
 import React, {useState} from "react";
 import {useProductStore} from "../../store/product.js";
-import { useSelector } from "react-redux";
+import {useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
 
 export default function ProductCard({product}) {
   const {DeleteProduct, UpdateProduct} = useProductStore();
   const [updatedProduct, setUpdatedProduct] = useState(product);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const {colorMode} = useColorMode();
+  const navigate = useNavigate();
 
   const openModal = () => {
     setUpdatedProduct(product); // reset to current product values on open
@@ -33,212 +37,247 @@ export default function ProductCard({product}) {
 
   const handleDeleteProduct = async (pid) => {
     const {success, message} = await DeleteProduct(pid);
-    if (success) {
-      toaster.create({
-        title: "Product deleted.",
-        description: message || "Your product was successfully deleted.",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-      });
-    } else {
-      toaster.create({
-        title: "Error deleting product.",
-        description: message || "Something went wrong.",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
-    }
+    toaster.create({
+      title: success ? "Product deleted." : "Error deleting product.",
+      description: message || (success ? "Your product was successfully deleted." : "Something went wrong."),
+      type: success ? "success" : "error",
+      duration: 5000,
+      isClosable: true,
+    });
   };
 
   const handleUpdateProduct = async (pid, updatedProduct) => {
     const {success, message} = await UpdateProduct(pid, updatedProduct);
     closeModal();
-    if (!success) {
-      toaster.create({
-        title: "Error updating product",
-        description: message || "Something went wrong.",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
-    } else {
-      toaster.create({
-        title: "Product updated.",
-        description: message || "Your product was successfully updated.",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-      });
-    }
+    toaster.create({
+      title: success ? "Product updated." : "Error updating product",
+      description: message || (success ? "Your product was successfully updated." : "Something went wrong."),
+      type: success ? "success" : "error",
+      duration: 5000,
+      isClosable: true,
+    });
   };
-const { currentUser } = useSelector((state) => state.user);
-const isAdmin = currentUser?.role === "admin";
-  
-  return (
-    <>
-      <Box
-        shadow="lg"
-        rounded="2xl"
-        overflow="hidden"
-        transition="all 0.3s"
-        _hover={{transform: "translateY(-5px)", shadow: "xl"}}
-        bg="white"
-        p={4}
-        m={4}
-      >
-        <Image src={product.image} alt={product.name} h={56} w="full" objectFit="cover" />
-        <Box p={4}>
-          <Heading as="h3" size="md" mb={2}>
-            {product.name}
-          </Heading>
-          {product.category && (
-            <Text fontSize="sm" color="gray.500" mb={1}>
-              {product.category}
-            </Text>
-          )}
-          <Text fontSize="sm" color="gray.600" mb={2} noOfLines={2}>
-            {product.description || "No description"}
-          </Text>
-          <Text fontWeight="bold" fontSize="xl" mb={1}>
-            ${product.price}
-          </Text>
-          <Text fontSize="sm" mb={4} color={product.stock > 0 ? "green.500" : "red.500"}>
-            {product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}
-          </Text>
-          <HStack spacing={2}>
-  {isAdmin ? (
-    <>
-      <IconButton onClick={openModal} aria-label="Edit product">
-        <Icon as={CiEdit} boxSize={6} />
-      </IconButton>
 
-      <IconButton
-        onClick={() => handleDeleteProduct(product._id)}
-        aria-label="Delete product"
-      >
-        <Icon as={MdDelete} boxSize={6} color="red.500" />
-      </IconButton>
-    </>
-  ) : (
-    <Button
-      colorScheme="green"
-      width="100%"
-      
+  const handleBuyNow = () => {
+    if (!currentUser) {
+      toaster.create({
+        title: "Sign in required",
+        description: "Please sign in to place an order.",
+        type: "warning",
+        duration: 4000,
+        isClosable: true,
+      });
+      navigate("/account");
+      return;
+    }
+    navigate(`/checkout/${product._id}`);
+  };
+
+  const {currentUser} = useSelector((state) => state.user);
+  const isAdmin = currentUser?.role === "admin";
+
+  return (
+    <Box
+      className="product-card"
+      rounded="2xl"
+      overflow="hidden"
+      bg="#fff"
+      _dark={{bg: "gray.900", borderColor: "gray.800"}}
+      border="1px solid"
+      borderColor="gray.100"
+      h="full"
+      display="flex"
+      flexDirection="column"
     >
-      Buy Now
-    </Button>
-  )}
-</HStack>
-        </Box>
+      <Box position="relative" overflow="hidden">
+        <Image
+          src={product.image}
+          alt={product.name}
+          h={56}
+          w="full"
+          objectFit="cover"
+          className="product-image"
+        />
+        {product.stock > 0 ? (
+          <Badge
+            position="absolute"
+            top={3}
+            left={3}
+            colorScheme="green"
+            rounded="full"
+            px={2}
+          >
+            ● {product.stock} in stock
+          </Badge>
+        ) : (
+          <Badge
+            position="absolute"
+            top={3}
+            left={3}
+            colorScheme="red"
+            rounded="full"
+            px={2}
+          >
+            Out of stock
+          </Badge>
+        )}
+        {product.category && (
+          <Badge
+            position="absolute"
+            top={3}
+            right={3}
+            rounded="full"
+            px={2}
+            bg="white"
+            _dark={{bg: "gray.800"}}
+            color="gray.600"
+            textTransform="uppercase"
+            fontSize="xs"
+          >
+            {product.category}
+          </Badge>
+        )}
       </Box>
 
-      {/* Custom Modal */}
-      {isModalOpen && (
-        <div style={styles.overlay} onClick={closeModal}>
-          <div
-            style={{
-              ...styles.modal,
-              backgroundColor: colorMode === "dark" ? "#2D3748" : "white",
-              color: colorMode === "dark" ? "white" : "black",
-            }}
-            onClick={(e) => e.stopPropagation()} // prevent close on modal click
+      <Box p={5} flex="1" display="flex" flexDirection="column">
+        <Heading as="h3" size="md" mb={2} fontFamily="var(--font-heading)" noOfLines={1}>
+          {product.name}
+        </Heading>
+        <Text fontSize="sm" color="gray.500" mb={4} noOfLines={2} flex="1">
+          {product.description || "No description available."}
+        </Text>
+
+        <Flex align="baseline" gap={2} mb={4}>
+          <Text fontWeight="800" fontSize="2xl" className="gradient-text">
+            ${product.price}
+          </Text>
+          {product.oldPrice > 0 && product.oldPrice > product.price && (
+            <Text fontSize="sm" color="gray.400" textDecoration="line-through">
+              ${product.oldPrice}
+            </Text>
+          )}
+        </Flex>
+
+        {isAdmin ? (
+          <HStack spacing={2} w="full">
+            <Button variant="outline" size="sm" flex="1" onClick={openModal}>
+              <Icon as={CiEdit} boxSize={4} /> Edit
+            </Button>
+            <Button
+              variant="outline"
+              colorScheme="red"
+              size="sm"
+              flex="1"
+              onClick={() => handleDeleteProduct(product._id)}
+            >
+              <Icon as={MdDelete} boxSize={4} /> Delete
+            </Button>
+          </HStack>
+        ) : (
+          <Button
+            className="btn-gradient"
+            width="100%"
+            onClick={handleBuyNow}
+            disabled={product.stock <= 0}
+            rounded="xl"
           >
-            <h2 style={{marginBottom: "1rem"}}>Update Product</h2>
-            <VStack spacing={4}>
-              <Input
-                placeholder="Product Name"
-                name="name"
-                value={updatedProduct.name}
-                onChange={(e) =>
-                  setUpdatedProduct({...updatedProduct, name: e.target.value})
-                }
-              />
-              <Input
-                placeholder="Price"
-                name="price"
-                type="number"
-                value={updatedProduct.price}
-                onChange={(e) =>
-                  setUpdatedProduct({...updatedProduct, price: e.target.value})
-                }
-              />
-              <Input
-                placeholder="Image URL"
-                name="image"
-                value={updatedProduct.image}
-                onChange={(e) =>
-                  setUpdatedProduct({...updatedProduct, image: e.target.value})
-                }
-              />
-              <Input
-                placeholder="Category"
-                name="category"
-                value={updatedProduct.category || ""}
-                onChange={(e) =>
-                  setUpdatedProduct({...updatedProduct, category: e.target.value})
-                }
-              />
-              <Input
-                placeholder="Stock"
-                name="stock"
-                type="number"
-                min="0"
-                value={updatedProduct.stock ?? 0}
-                onChange={(e) =>
-                  setUpdatedProduct({...updatedProduct, stock: e.target.value})
-                }
-              />
-              <Box w="full">
-                <Textarea
-                  placeholder="Description"
-                  name="description"
-                  value={updatedProduct.description || ""}
+            <Icon as={HiOutlineShoppingBag} boxSize={4} />
+            {product.stock > 0 ? "Buy Now" : "Out of Stock"}
+          </Button>
+        )}
+      </Box>
+
+      {/* Modal */}
+      <Dialog.Root open={isModalOpen} onOpenChange={(e) => (e.open ? null : closeModal())}>
+        <Dialog.Backdrop />
+        <Dialog.Positioner>
+          <Dialog.Content>
+            <Dialog.Header>
+              <Dialog.Title>
+                <HStack>
+                  <Icon as={HiOutlineSparkles} color="indigo.400" />
+                  <Text>Update Product</Text>
+                </HStack>
+              </Dialog.Title>
+              <Dialog.CloseTrigger />
+            </Dialog.Header>
+            <Dialog.Body>
+              <VStack spacing={4}>
+                <Input
+                  placeholder="Product Name"
+                  name="name"
+                  value={updatedProduct.name}
                   onChange={(e) =>
-                    setUpdatedProduct({...updatedProduct, description: e.target.value})
+                    setUpdatedProduct({...updatedProduct, name: e.target.value})
                   }
                 />
-              </Box>
-            </VStack>
-            <div style={{marginTop: "1.5rem", textAlign: "right"}}>
-              <Button
-                colorScheme="blue"
-                mr={3}
-                onClick={() => handleUpdateProduct(product._id, updatedProduct)}
-              >
+                <Input
+                  placeholder="Price"
+                  name="price"
+                  type="number"
+                  value={updatedProduct.price}
+                  onChange={(e) =>
+                    setUpdatedProduct({...updatedProduct, price: e.target.value})
+                  }
+                />
+                <Input
+                  placeholder="Old price (before discount)"
+                  name="oldPrice"
+                  type="number"
+                  value={updatedProduct.oldPrice ?? ""}
+                  onChange={(e) =>
+                    setUpdatedProduct({...updatedProduct, oldPrice: e.target.value})
+                  }
+                />
+                <Input
+                  placeholder="Image URL"
+                  name="image"
+                  value={updatedProduct.image}
+                  onChange={(e) =>
+                    setUpdatedProduct({...updatedProduct, image: e.target.value})
+                  }
+                />
+                <Input
+                  placeholder="Category"
+                  name="category"
+                  value={updatedProduct.category || ""}
+                  onChange={(e) =>
+                    setUpdatedProduct({...updatedProduct, category: e.target.value})
+                  }
+                />
+                <Input
+                  placeholder="Stock"
+                  name="stock"
+                  type="number"
+                  min="0"
+                  value={updatedProduct.stock ?? 0}
+                  onChange={(e) =>
+                    setUpdatedProduct({...updatedProduct, stock: e.target.value})
+                  }
+                />
+                <Box w="full">
+                  <Textarea
+                    placeholder="Description"
+                    name="description"
+                    value={updatedProduct.description || ""}
+                    onChange={(e) =>
+                      setUpdatedProduct({...updatedProduct, description: e.target.value})
+                    }
+                  />
+                </Box>
+              </VStack>
+            </Dialog.Body>
+            <Dialog.Footer>
+              <Button className="btn-gradient" mr={3} onClick={() => handleUpdateProduct(product._id, updatedProduct)}>
                 Update
               </Button>
               <Button variant="ghost" onClick={closeModal}>
                 Cancel
               </Button>
-            </div>
-          </div>
-        </div>
-      )}
-    </>
+            </Dialog.Footer>
+          </Dialog.Content>
+        </Dialog.Positioner>
+      </Dialog.Root>
+    </Box>
   );
 }
-
-// Simple CSS styles for the modal overlay and content
-const styles = {
-  overlay: {
-    position: "fixed",
-    top: 0,
-    left: 0,
-    width: "100vw",
-    height: "100vh",
-    backgroundColor: "rgba(0,0,0,0.5)",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    zIndex: 1000,
-  },
-  modal: {
-    padding: "2rem",
-    borderRadius: "10px",
-    width: "90%",
-    maxWidth: "400px",
-    boxShadow: "0 5px 15px rgba(0,0,0,0.3)",
-  },
-};

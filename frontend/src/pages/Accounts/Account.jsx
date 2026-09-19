@@ -124,8 +124,8 @@ const handleLogin = async (e) => {
 
 
   return (
-    <div style={styles.page}>
-      <div style={styles.card}>
+    <div style={styles.page} className="anim-fade-in-up">
+      <div style={styles.card} className="anim-scale-in">
         <main style={styles.left}>
           <h1 style={styles.heading}>Sign in to your account</h1>
           <p style={styles.sub}>Access your dashboard and manage your content.</p>
@@ -243,8 +243,8 @@ const handleLogin = async (e) => {
           <div style={{ marginTop: "auto" }}>
             <div style={{ fontSize: 13, color: "#64748b" }}>Need help?</div>
             <div style={{ marginTop: 8, display: "flex", gap: 8 }}>
-              <a
-                href="/help"
+              <Link
+                to="/documentation"
                 style={{
                   color: "#6366f1",
                   textDecoration: "none",
@@ -252,13 +252,13 @@ const handleLogin = async (e) => {
                 }}
               >
                 Documentation
-              </a>
-              <a
-                href="/contact"
+              </Link>
+              <Link
+                to="/contact"
                 style={{ color: "#64748b", textDecoration: "none" }}
               >
                 Contact support
-              </a>
+              </Link>
             </div>
           </div>
         </aside>
