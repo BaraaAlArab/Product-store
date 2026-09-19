@@ -47,7 +47,7 @@ function OrdersPage() {
         ) : (
           <VStack spacing={5} align="stretch">
             {orders.map((order) => (
-              <Box key={order._id} p={6} rounded="2xl" bg="white" _dark={{bg: "gray.900", borderColor: "gray.800"}} border="1px solid" borderColor="gray.100">
+              <Box key={order._id} p={{base: 4, sm: 6}} rounded="2xl" bg="white" _dark={{bg: "gray.900", borderColor: "gray.800"}} border="1px solid" borderColor="gray.100">
                 <Flex justify="space-between" wrap="wrap" gap={3} mb={4}>
                   <Box>
                     <Text fontSize="sm" color="gray.500">Order placed</Text>

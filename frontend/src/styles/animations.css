@@ -261,3 +261,37 @@ body {
 [data-theme="dark"] .card-surface {
   background: #1e1b2e;
 }
+
+/* ---------- Responsive auth pages ---------- */
+
+.auth-page {
+  padding: 16px !important;
+}
+
+.auth-card {
+  grid-template-columns: 1fr !important;
+}
+
+.auth-card .auth-main,
+.auth-card .auth-aside {
+  padding: 20px !important;
+}
+
+@media (min-width: 768px) {
+  .auth-page {
+    padding: 32px !important;
+  }
+
+  .auth-card {
+    grid-template-columns: 1fr 380px !important;
+  }
+
+  .auth-card.auth-card-lg {
+    grid-template-columns: 1fr 420px !important;
+  }
+
+  .auth-card .auth-main,
+  .auth-card .auth-aside {
+    padding: 28px !important;
+  }
+}

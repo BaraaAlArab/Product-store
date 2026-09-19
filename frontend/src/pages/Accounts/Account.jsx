@@ -124,9 +124,9 @@ const handleLogin = async (e) => {
 
 
   return (
-    <div style={styles.page} className="anim-fade-in-up">
-      <div style={styles.card} className="anim-scale-in">
-        <main style={styles.left}>
+    <div style={styles.page} className="anim-fade-in-up auth-page">
+      <div style={styles.card} className="anim-scale-in auth-card">
+        <main style={styles.left} className="auth-main">
           <h1 style={styles.heading}>Sign in to your account</h1>
           <p style={styles.sub}>Access your dashboard and manage your content.</p>
 
@@ -215,7 +215,7 @@ const handleLogin = async (e) => {
           </form>
         </main>
 
-        <aside style={styles.right}>
+        <aside style={styles.right} className="auth-aside">
           <div>
             <h3 style={{ margin: 0, fontSize: 16 }}>Welcome back!</h3>
             <p style={{ marginTop: 8, ...styles.smallMuted }}>

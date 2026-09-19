@@ -100,7 +100,7 @@ function TrackOrderPage() {
         {loading && <Spinner size="lg" color="indigo.400" />}
 
         {!loading && order && (
-          <Box w="full" p={6} rounded="2xl" className="hero-gradient anim-fade-in-up">
+          <Box w="full" p={{base: 4, sm: 6}} rounded="2xl" className="hero-gradient anim-fade-in-up">
             <Flex justify="space-between" align="center" wrap="wrap" gap={3} mb={4}>
               <Box>
                 <Text fontSize="sm" color="gray.500">Tracking number</Text>
@@ -154,7 +154,12 @@ function TrackOrderPage() {
                         >
                           <Icon as={HiOutlineCheckCircle} />
                         </Flex>
-                        <Text fontSize="xs" fontWeight={i <= stepIndex ? "bold" : "normal"} color={i <= stepIndex ? "indigo.500" : "gray.400"}>
+                        <Text
+                          fontSize="xs"
+                          fontWeight={i <= stepIndex ? "bold" : "normal"}
+                          color={i <= stepIndex ? "indigo.500" : "gray.400"}
+                          display={{base: "none", sm: "block"}}
+                        >
                           {statusMeta[step].label}
                         </Text>
                       </Flex>

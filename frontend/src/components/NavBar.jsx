@@ -2,7 +2,7 @@ import {Flex, Text, HStack, Button} from "@chakra-ui/react";
 import {CiSquarePlus} from "react-icons/ci";
 import {FiUserPlus} from "react-icons/fi";
 import {CiLogout} from "react-icons/ci";
-import {HiOutlineTruck, HiOutlineBookOpen, HiOutlineChatBubbleLeftRight, HiOutlineShoppingBag} from "react-icons/hi2";
+import {HiOutlineTruck, HiOutlineBookOpen, HiOutlineChatBubbleLeftRight, HiOutlineShoppingBag, HiOutlineChartBar} from "react-icons/hi2";
 import {Link, useNavigate} from "react-router-dom";
 import {useColorMode} from "./ui/color-mode";
 import {IoMoonSharp} from "react-icons/io5";
@@ -49,7 +49,12 @@ function NavBar() {
         </Link>
       </Text>
 
-      <HStack spacing={2} alignItems="center">
+      <HStack
+        flexWrap="wrap"
+        justifyContent={{base: "center", sm: "flex-end"}}
+        gap={{base: 1, sm: 2}}
+        alignItems="center"
+      >
         <Link to="/track">
           <Button variant="ghost" size="sm" aria-label="Track order">
             <HiOutlineTruck fontSize={18} />
@@ -67,11 +72,18 @@ function NavBar() {
         </Link>
 
         {isAdmin && (
-          <Link to="/create">
-            <Button className="btn-gradient" size="sm">
-              <CiSquarePlus fontSize={20} /> Add
-            </Button>
-          </Link>
+          <>
+            <Link to="/admin">
+              <Button className="btn-gradient" size="sm" aria-label="Admin dashboard">
+                <HiOutlineChartBar fontSize={18} /> Dashboard
+              </Button>
+            </Link>
+            <Link to="/create">
+              <Button variant="outline" size="sm">
+                <CiSquarePlus fontSize={20} /> Add
+              </Button>
+            </Link>
+          </>
         )}
 
         {currentUser ? (

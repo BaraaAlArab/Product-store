@@ -93,7 +93,7 @@ function CheckoutPage() {
 
       <Flex flexDir={{base: "column", lg: "row"}} gap={8}>
         {/* Shipping form */}
-        <Box flex="1.4" p={6} rounded="2xl" border="1px solid" borderColor="gray.200" _dark={{borderColor: "gray.700"}}>
+        <Box flex="1.4" p={{base: 4, sm: 6}} rounded="2xl" border="1px solid" borderColor="gray.200" _dark={{borderColor: "gray.700"}}>
           <Heading as="h3" size="md" mb={5} display="flex" alignItems="center" gap={2}>
             <Icon as={HiOutlineTruck} color="indigo.400" /> Shipping details
           </Heading>
@@ -125,7 +125,7 @@ function CheckoutPage() {
         </Box>
 
         {/* Order summary */}
-        <Box flex="1" p={6} rounded="2xl" className="hero-gradient">
+        <Box flex="1" p={{base: 4, sm: 6}} rounded="2xl" className="hero-gradient">
           <Heading as="h3" size="md" mb={5} fontFamily="var(--font-heading)">
             Order summary
           </Heading>

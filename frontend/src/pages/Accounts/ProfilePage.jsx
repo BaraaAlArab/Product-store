@@ -41,7 +41,7 @@ function ProfilePage() {
 
   return (
     <Box maxW="6xl" mx="auto" p={6} className="anim-fade-in-up">
-      <HStack gap={6} mb={8}>
+      <HStack gap={6} mb={8} wrap="wrap">
         {user?.avatar ? (
           <Image
             src={user.avatar}

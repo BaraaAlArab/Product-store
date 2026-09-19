@@ -169,13 +169,13 @@ function HomePage() {
 
         {/* Product grid */}
         {loading ? (
-          <SimpleGrid columns={{base: 1, md: 2, lg: 3}} spacing={10} w="full">
+          <SimpleGrid columns={{base: 1, sm: 2, lg: 3, xl: 4}} spacing={{base: 6, md: 10}} w="full">
             {[0, 1, 2, 3, 4, 5].map((i) => (
               <Skeleton key={i} height="280px" rounded="2xl" className="shimmer" />
             ))}
           </SimpleGrid>
         ) : filteredProducts.length > 0 ? (
-          <SimpleGrid columns={{base: 1, md: 2, lg: 3}} spacing={10} w="full">
+          <SimpleGrid columns={{base: 1, sm: 2, lg: 3, xl: 4}} spacing={{base: 6, md: 10}} w="full">
             {filteredProducts.map((product) => (
               <Box key={product._id} className="stagger-item">
                 <ProductCard product={product} />

@@ -143,9 +143,9 @@ const res = await fetch("/api/users/register", {
     }
 
     return (
-        <div style={styles.page} className="anim-fade-in-up">
-            <div style={styles.card} className="anim-scale-in">
-                <main style={styles.left}>
+        <div style={styles.page} className="anim-fade-in-up auth-page">
+            <div style={styles.card} className="anim-scale-in auth-card auth-card-lg">
+                <main style={styles.left} className="auth-main">
                     <h1 style={{ ...styles.heading, color: "black" }}>
                         Create an account
                     </h1>
@@ -273,7 +273,7 @@ const res = await fetch("/api/users/register", {
                     </form>
                 </main>
 
-                <aside style={styles.right}>
+                <aside style={styles.right} className="auth-aside">
                     <h3 style={{ margin: 0, fontSize: 16 }}>Why create an account?</h3>
                     <p style={{ marginTop: 8, ...styles.footNote }}>
                         Save your products, manage items, place orders, and much more.
