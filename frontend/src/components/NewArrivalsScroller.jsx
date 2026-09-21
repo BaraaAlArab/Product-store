@@ -76,7 +76,7 @@ function NewArrivalsScroller({products}) {
                     )}
                   </Flex>
                   <Flex align="center" gap={2}>
-                    <Text fontWeight="800" fontSize="sm" color="indigo.500">
+                    <Text fontWeight="800" fontSize="sm" color="teal.500">
                       ${product.price}
                     </Text>
                     {product.oldPrice && product.oldPrice > product.price && (

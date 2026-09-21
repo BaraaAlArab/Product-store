@@ -7,13 +7,13 @@ const ads = [
     icon: HiOutlineSparkles,
     title: "New Arrivals",
     subtitle: "Fresh products just landed",
-    bg: "linear-gradient(135deg, #6366f1, #8b5cf6)",
+    bg: "linear-gradient(135deg, #0d9488, #14b8a6)",
   },
   {
     icon: HiOutlineFire,
     title: "Hot Deals",
     subtitle: "Limited-time offers this week",
-    bg: "linear-gradient(135deg, #d946ef, #a855f7)",
+    bg: "linear-gradient(135deg, #2dd4bf, #f59e0b)",
   },
   {
     icon: HiOutlineTicket,

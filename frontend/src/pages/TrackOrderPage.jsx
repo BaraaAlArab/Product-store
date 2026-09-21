@@ -97,7 +97,7 @@ function TrackOrderPage() {
           </Flex>
         </form>
 
-        {loading && <Spinner size="lg" color="indigo.400" />}
+        {loading && <Spinner size="lg" color="teal.400" />}
 
         {!loading && order && (
           <Box w="full" p={{base: 4, sm: 6}} rounded="2xl" className="hero-gradient anim-fade-in-up">
@@ -149,7 +149,7 @@ function TrackOrderPage() {
                           rounded="full"
                           align="center"
                           justify="center"
-                          bg={i <= stepIndex ? "indigo.500" : "gray.200"}
+                          bg={i <= stepIndex ? "teal.500" : "gray.200"}
                           color="white"
                         >
                           <Icon as={HiOutlineCheckCircle} />
@@ -157,14 +157,14 @@ function TrackOrderPage() {
                         <Text
                           fontSize="xs"
                           fontWeight={i <= stepIndex ? "bold" : "normal"}
-                          color={i <= stepIndex ? "indigo.500" : "gray.400"}
+                          color={i <= stepIndex ? "teal.500" : "gray.400"}
                           display={{base: "none", sm: "block"}}
                         >
                           {statusMeta[step].label}
                         </Text>
                       </Flex>
                       {i < statusSteps.length - 1 && (
-                        <Box flex="1" h="2px" mx={2} mb={6} bg={i < stepIndex ? "indigo.500" : "gray.200"} />
+                        <Box flex="1" h="2px" mx={2} mb={6} bg={i < stepIndex ? "teal.500" : "gray.200"} />
                       )}
                     </Flex>
                   ))}

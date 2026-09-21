@@ -60,7 +60,7 @@ const styles = {
   submit: (disabled) => ({
     padding: "10px 14px",
     borderRadius: 10,
-    background: disabled ? "#e6e9ff" : "#6366f1",
+    background: disabled ? "#d9f5ef" : "#0d9488",
     color: disabled ? "#94a3b8" : "#fff",
     border: "none",
     fontWeight: 600,
@@ -179,7 +179,7 @@ const handleLogin = async (e) => {
             <div style={{ marginTop: 6, textAlign: "right" }}>
               <Link
                 to="/forgot-password"
-                style={{ fontSize: 13, color: "#6366f1", textDecoration: "none" }}
+                style={{ fontSize: 13, color: "#0d9488", textDecoration: "none" }}
               >
                 Forgot password?
               </Link>
@@ -207,7 +207,7 @@ const handleLogin = async (e) => {
               Don’t have an account?{" "}
               <Link
                 to="/createAccount"
-                style={{ color: "#6366f1", textDecoration: "none", fontWeight: 500 }}
+                style={{ color: "#0d9488", textDecoration: "none", fontWeight: 500 }}
               >
                 Create one
               </Link>
@@ -246,7 +246,7 @@ const handleLogin = async (e) => {
               <Link
                 to="/documentation"
                 style={{
-                  color: "#6366f1",
+                  color: "#0d9488",
                   textDecoration: "none",
                   fontWeight: 600,
                 }}

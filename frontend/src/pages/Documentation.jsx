@@ -70,7 +70,7 @@ function DocumentationPage() {
               style={{animationDelay: `${0.1 + i * 0.05}s`}}
             >
               <Flex gap={3} align="center" mb={3}>
-                <Flex boxSize="44px" rounded="xl" align="center" justify="center" bg="indigo.50" color="indigo.500" _dark={{bg: "indigo.950", color: "indigo.300"}}>
+                <Flex boxSize="44px" rounded="xl" align="center" justify="center" bg="teal.50" color="teal.500" _dark={{bg: "teal.950", color: "teal.300"}}>
                   <Icon as={s.icon} boxSize={5} />
                 </Flex>
                 <Heading as="h3" size="md" fontFamily="var(--font-heading)">{s.title}</Heading>
@@ -82,7 +82,7 @@ function DocumentationPage() {
 
         <Text color="gray.500">
           Still need help?{" "}
-          <Link to="/contact" style={{color: "#6366f1", fontWeight: 600}}>Contact support</Link>
+          <Link to="/contact" style={{color: "#0d9488", fontWeight: 600}}>Contact support</Link>
         </Text>
       </VStack>
     </Container>

@@ -66,7 +66,7 @@ function HomePage() {
             <Flex
               alignItems="center"
               gap={2}
-              color="indigo.400"
+              color="teal.400"
               fontWeight="medium"
               fontSize="sm"
               className="anim-fade-in-up"

@@ -161,10 +161,10 @@ function Admin() {
   const activeOrders = orders.filter((o) => ["pending", "processing", "shipped"].includes(o.status));
 
   const statCards = [
-    { label: "Clients", value: clientCount, icon: HiOutlineUsers, color: "indigo.500", bg: "indigo.50" },
+    { label: "Clients", value: clientCount, icon: HiOutlineUsers, color: "teal.500", bg: "teal.50" },
     { label: "Pending orders", value: stats.pending, icon: HiOutlineShoppingBag, color: "orange.500", bg: "orange.50" },
     { label: "Processing", value: stats.processing, icon: HiOutlineCog6Tooth, color: "blue.500", bg: "blue.50" },
-    { label: "Shipped", value: stats.shipped, icon: HiOutlineTruck, color: "purple.500", bg: "purple.50" },
+    { label: "Shipped", value: stats.shipped, icon: HiOutlineTruck, color: "teal.400", bg: "teal.50" },
   ];
 
   return (
@@ -228,7 +228,7 @@ function Admin() {
                     return (
                       <Table.Row key={order._id}>
                         <Table.Cell>
-                          <Text fontWeight="bold" color="indigo.500">{order.trackingNumber}</Text>
+                          <Text fontWeight="bold" color="teal.500">{order.trackingNumber}</Text>
                         </Table.Cell>
                         <Table.Cell>
                           <Text>{order.shipping.name}</Text>

@@ -95,7 +95,7 @@ function CheckoutPage() {
         {/* Shipping form */}
         <Box flex="1.4" p={{base: 4, sm: 6}} rounded="2xl" border="1px solid" borderColor="gray.200" _dark={{borderColor: "gray.700"}}>
           <Heading as="h3" size="md" mb={5} display="flex" alignItems="center" gap={2}>
-            <Icon as={HiOutlineTruck} color="indigo.400" /> Shipping details
+            <Icon as={HiOutlineTruck} color="teal.400" /> Shipping details
           </Heading>
           <form onSubmit={handlePlaceOrder}>
             <VStack spacing={4}>

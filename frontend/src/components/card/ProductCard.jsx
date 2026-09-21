@@ -195,7 +195,7 @@ export default function ProductCard({product}) {
             <Dialog.Header>
               <Dialog.Title>
                 <HStack>
-                  <Icon as={HiOutlineSparkles} color="indigo.400" />
+                  <Icon as={HiOutlineSparkles} color="teal.400" />
                   <Text>Update Product</Text>
                 </HStack>
               </Dialog.Title>

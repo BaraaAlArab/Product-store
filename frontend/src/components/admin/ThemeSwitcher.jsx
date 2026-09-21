@@ -44,7 +44,7 @@ function ThemeSwitcher() {
   return (
     <Box p={5} rounded="2xl" bg="white" _dark={{bg: "gray.900", borderColor: "gray.800"}} border="1px solid" borderColor="gray.100" w="full">
       <Flex align="center" gap={2} mb={3}>
-        <Flex boxSize="34px" rounded="lg" align="center" justify="center" bg="indigo.50" color="indigo.500" _dark={{bg: "indigo.950", color: "indigo.300"}}>
+        <Flex boxSize="34px" rounded="lg" align="center" justify="center" bg="teal.50" color="teal.500" _dark={{bg: "teal.950", color: "teal.300"}}>
           <Icon as={HiOutlinePaintBrush} />
         </Flex>
         <Box>

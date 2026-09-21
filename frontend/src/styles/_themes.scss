@@ -7,13 +7,13 @@
 
 // --- Default (no event) tokens --------------------------------------------
 :root {
-  --app-bg: #f4f6f8;
-  --app-bg-dark: #111827;
-  --nav-border: rgba(99, 102, 241, 0.12);
-  --nav-border-dark: rgba(139, 92, 246, 0.2);
-  --glow: 0 8px 24px rgba(99, 102, 241, 0.4);
-  --shadow-hover: 0 24px 48px -12px rgba(99, 102, 241, 0.25);
-  --animated-gradient: linear-gradient(120deg, #6366f1, #8b5cf6, #a855f7, #d946ef);
+ --app-bg: #f3faf9;            
+--app-bg-dark: #0c1114;       
+--nav-border: rgba(13,148,136,0.15);    
+--nav-border-dark: rgba(20,184,166,0.25);
+--glow: 0 8px 24px rgba(13,148,136,0.4); 
+--shadow-hover: 0 24px 48px -12px rgba(13,148,136,0.25);
+--animated-gradient: linear-gradient(120deg, #0d9488, #14b8a6, #2dd4bf, #f59e0b); 
 }
 
 // --- Event palettes ---------------------------------------------------------

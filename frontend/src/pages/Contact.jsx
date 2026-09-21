@@ -50,7 +50,7 @@ function ContactPage() {
             </Text>
 
             <Flex gap={3} align="center">
-              <Flex boxSize="44px" rounded="xl" align="center" justify="center" bg="white" color="indigo.500" shadow="md">
+              <Flex boxSize="44px" rounded="xl" align="center" justify="center" bg="white" color="teal.500" shadow="md">
                 <Icon as={HiOutlineEnvelope} boxSize={5} />
               </Flex>
               <Box>
@@ -60,7 +60,7 @@ function ContactPage() {
             </Flex>
 
             <Flex gap={3} align="center">
-              <Flex boxSize="44px" rounded="xl" align="center" justify="center" bg="white" color="indigo.500" shadow="md">
+              <Flex boxSize="44px" rounded="xl" align="center" justify="center" bg="white" color="teal.500" shadow="md">
                 <Icon as={HiOutlineChatBubbleLeftRight} boxSize={5} />
               </Flex>
               <Box>

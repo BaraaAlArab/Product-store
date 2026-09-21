@@ -55,7 +55,7 @@ function OrdersPage() {
                   </Box>
                   <Box textAlign={{base: "left", sm: "right"}}>
                     <Text fontSize="sm" color="gray.500">Tracking #</Text>
-                    <Text fontWeight="bold" fontFamily="var(--font-heading)" color="indigo.500">
+                    <Text fontWeight="bold" fontFamily="var(--font-heading)" color="teal.500">
                       {order.trackingNumber}
                     </Text>
                   </Box>

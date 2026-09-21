@@ -68,7 +68,7 @@ function ForgotPasswordPage() {
           )}
           <Text fontSize="sm" textAlign="center" color="gray.500">
             Remembered it?{" "}
-            <Link to="/account" style={{color: "#6366f1", fontWeight: 600}}>Sign in</Link>
+            <Link to="/account" style={{color: "#0d9488", fontWeight: 600}}>Sign in</Link>
           </Text>
         </VStack>
       </Box>

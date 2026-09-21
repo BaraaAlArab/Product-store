@@ -49,7 +49,7 @@ const styles = {
     submit: (disabled) => ({
         padding: "10px 14px",
         borderRadius: 10,
-        background: disabled ? "#e6e9ff" : "#6366f1",
+        background: disabled ? "#d9f5ef" : "#0d9488",
         color: disabled ? "#94a3b8" : "#fff",
         border: "none",
         fontWeight: 600,
