@@ -1,13 +1,59 @@
-// src/styles/_variables.scss
+// ============ Design tokens (SCSS) ============
 
-$primary: #4f46e5;
-$secondary: #10b981;
-$danger: #dc2626;
-$gray: #6b7280;
-$bg: #f9fafb;
+// Brand palette
+$primary: #6366f1;
+$primary-light: #8b5cf6;
+$primary-dark: #4f46e5;
+$accent: #a855f7;
+$danger: #ef4444;
+$success: #10b981;
+$warning: #f59e0b;
 
-$radius: 12px;
-$transition: 0.2s ease;
+// Surfaces
+$surface-light: #ffffff;
+$surface-dark: #11111b;
+$border-light: rgba(99, 102, 241, 0.12);
+$border-dark: rgba(139, 92, 246, 0.2);
 
-$color: $primary;
-$border-radius: $radius;
+// Text
+$text-heading: #0f172a;
+$text-body: #1e293b;
+$text-muted: #64748b;
+
+// Gradients
+$gradient-primary: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+$gradient-soft: linear-gradient(135deg, #eef2ff 0%, #f5f3ff 50%, #faf5ff 100%);
+$gradient-dark: rgba(139, 92, 246, 0.2);
+
+// Typography
+$font-heading: "Space Grotesk", "Inter", sans-serif;
+$font-body: "Inter", sans-serif;
+
+// Breakpoints (Chakra-aligned, in em)
+$bp-sm: 30em; //  480px
+$bp-md: 48em; //  768px
+$bp-lg: 62em; //  992px
+$bp-xl: 80em; // 1280px
+
+// Motion
+$ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+$dur-fast: 0.35s;
+$dur-med: 0.5s;
+$dur-slow: 0.7s;
+
+// Shadows (CSS-var based so event themes can recolor them)
+$shadow-hover: var(--shadow-hover, 0 24px 48px -12px rgba(99, 102, 241, 0.25));
+$shadow-glow: var(--glow, 0 8px 24px rgba(99, 102, 241, 0.4));
+
+// Radii
+$radius-lg: 32px;
+$radius-xl: 24px;
+
+// ============ Runtime tokens (CSS custom properties) ============
+
+:root {
+  --gradient-primary: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+  --gradient-soft: linear-gradient(135deg, #eef2ff 0%, #f5f3ff 50%, #faf5ff 100%);
+  --font-heading: #{$font-heading};
+  --font-body: #{$font-body};
+}

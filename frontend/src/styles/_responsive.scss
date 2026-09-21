@@ -1,0 +1,48 @@
+// ============ Responsive & accessibility rules ============
+
+@use "variables" as v;
+@use "mixins";
+
+// --- Responsive auth pages ---
+.auth-page {
+  padding: 16px !important;
+}
+
+.auth-card {
+  grid-template-columns: 1fr !important;
+
+  .auth-main,
+  .auth-aside {
+    padding: 20px !important;
+  }
+}
+
+@include mixins.media-up(v.$bp-md) {
+  .auth-page {
+    padding: 32px !important;
+  }
+
+  .auth-card {
+    grid-template-columns: 1fr 380px !important;
+
+    &.auth-card-lg {
+      grid-template-columns: 1fr 420px !important;
+    }
+
+    .auth-main,
+    .auth-aside {
+      padding: 28px !important;
+    }
+  }
+}
+
+// --- Reduced motion ---
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

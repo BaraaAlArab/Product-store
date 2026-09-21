@@ -3,7 +3,7 @@ import {Route, Routes} from "react-router-dom";
 import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import NavBar from "./components/NavBar.jsx";
-import {useColorModeValue} from "./components/ui/color-mode.jsx";
+import EventScenery from "./components/EventScenery.jsx";
 import CreatePage from "./pages/CreatePage.jsx";
 import HomePage from "./pages/HomePage.jsx";
 import CreateAccount from "./pages/Accounts/CreateAccount.jsx";
@@ -20,11 +20,16 @@ import DocumentationPage from "./pages/Documentation.jsx";
 import ContactPage from "./pages/Contact.jsx";
 import OrdersPage from "./pages/OrdersPage.jsx";
 import {loginSuccess} from "./redux/userSlice.js";
+import {initEventTheme} from "./theme/eventThemes.js";
 
 function App() {
   const dispatch = useDispatch();
   const {currentUser} = useSelector((state) => state.user);
-  const bg = useColorModeValue("gray.100", "gray.900");
+
+  // Apply the admin-selected site-wide event theme for every visitor
+  useEffect(() => {
+    initEventTheme();
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -42,7 +47,8 @@ function App() {
 
   return (
     <>
-      <Box minH={"100vh"} bg={bg}>
+      <Box minH={"100vh"} className="app-shell">
+        <EventScenery />
         <NavBar />
         <Routes>
           <Route path="/" element={<HomePage />} />

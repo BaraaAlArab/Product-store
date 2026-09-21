@@ -1,0 +1,11 @@
+// ============ Main stylesheet entry ============
+// Imported once in main.jsx. Order matters: tokens → base → features.
+
+@use "variables";
+@use "mixins";
+@use "base";
+@use "animations";
+@use "components";
+@use "responsive";
+@use "themes";
+@use "scenery";

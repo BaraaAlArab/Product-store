@@ -1,0 +1,150 @@
+// ============ Site-wide event themes ============
+// The admin picks an event → html[data-event="..."] is set on <html> for EVERY
+// visitor (guests, clients, admins). Everything below is pure SCSS/CSS theme overrides.
+
+@use "sass:map";
+@use "mixins";
+
+// --- Default (no event) tokens --------------------------------------------
+:root {
+  --app-bg: #f4f6f8;
+  --app-bg-dark: #111827;
+  --nav-border: rgba(99, 102, 241, 0.12);
+  --nav-border-dark: rgba(139, 92, 246, 0.2);
+  --glow: 0 8px 24px rgba(99, 102, 241, 0.4);
+  --shadow-hover: 0 24px 48px -12px rgba(99, 102, 241, 0.25);
+  --animated-gradient: linear-gradient(120deg, #6366f1, #8b5cf6, #a855f7, #d946ef);
+}
+
+// --- Event palettes ---------------------------------------------------------
+$events: (
+  "ramadan": (
+    primary: linear-gradient(135deg, #065f46 0%, #059669 50%, #d97706 100%),
+    hero: radial-gradient(circle at 20% 20%, rgba(16, 185, 129, 0.22), transparent 50%),
+    hero2: radial-gradient(circle at 80% 30%, rgba(245, 158, 11, 0.16), transparent 50%),
+    heroBase: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 50%, #fffbeb 100%),
+    heroDark: radial-gradient(circle at 20% 20%, rgba(16, 185, 129, 0.28), transparent 50%),
+    heroDark2: radial-gradient(circle at 80% 30%, rgba(245, 158, 11, 0.18), transparent 50%),
+    heroDarkBase: linear-gradient(135deg, #022c22 0%, #064e3b 60%, #451a03 100%),
+    border: rgba(16, 185, 129, 0.35),
+    borderDark: rgba(245, 158, 11, 0.35),
+    bodyLight: #f1faf6,
+    bodyDark: #0a1412,
+    glow: 0 8px 24px rgba(16, 185, 129, 0.45),
+    shadowHover: 0 24px 48px -12px rgba(16, 185, 129, 0.28),
+    animated: linear-gradient(120deg, #065f46, #059669, #34d399, #f59e0b),
+  ),
+  "eid": (
+    primary: linear-gradient(135deg, #4d7c0f 0%, #84cc16 50%, #facc15 100%),
+    hero: radial-gradient(circle at 20% 20%, rgba(132, 204, 22, 0.2), transparent 50%),
+    hero2: radial-gradient(circle at 80% 30%, rgba(250, 204, 21, 0.18), transparent 50%),
+    heroBase: linear-gradient(135deg, #f7fee7 0%, #f0fdf4 50%, #fefce8 100%),
+    heroDark: radial-gradient(circle at 20% 20%, rgba(132, 204, 22, 0.26), transparent 50%),
+    heroDark2: radial-gradient(circle at 80% 30%, rgba(250, 204, 21, 0.2), transparent 50%),
+    heroDarkBase: linear-gradient(135deg, #100f02 0%, #1c2a04 60%, #3a2f04 100%),
+    border: rgba(132, 204, 22, 0.4),
+    borderDark: rgba(250, 204, 21, 0.35),
+    bodyLight: #f8fbf0,
+    bodyDark: #0c1007,
+    glow: 0 8px 24px rgba(132, 204, 22, 0.4),
+    shadowHover: 0 24px 48px -12px rgba(132, 204, 22, 0.3),
+    animated: linear-gradient(120deg, #4d7c0f, #84cc16, #facc15, #fde047),
+  ),
+  "easter": (
+    primary: linear-gradient(135deg, #db2777 0%, #a855f7 50%, #f59e0b 100%),
+    hero: radial-gradient(circle at 20% 20%, rgba(236, 72, 153, 0.2), transparent 50%),
+    hero2: radial-gradient(circle at 80% 30%, rgba(167, 139, 250, 0.2), transparent 50%),
+    heroBase: linear-gradient(135deg, #fdf2f8 0%, #f5f3ff 50%, #fefce8 100%),
+    heroDark: radial-gradient(circle at 20% 20%, rgba(236, 72, 153, 0.26), transparent 50%),
+    heroDark2: radial-gradient(circle at 80% 30%, rgba(167, 139, 250, 0.24), transparent 50%),
+    heroDarkBase: linear-gradient(135deg, #1b0a14 0%, #1e0b26 60%, #3a1d05 100%),
+    border: rgba(236, 72, 153, 0.35),
+    borderDark: rgba(167, 139, 250, 0.4),
+    bodyLight: #fbf2f8,
+    bodyDark: #150a12,
+    glow: 0 8px 24px rgba(236, 72, 153, 0.4),
+    shadowHover: 0 24px 48px -12px rgba(236, 72, 153, 0.28),
+    animated: linear-gradient(120deg, #f472b6, #c084fc, #a78bfa, #fbbf24),
+  ),
+  "christmas": (
+    primary: linear-gradient(135deg, #b91c1c 0%, #dc2626 50%, #f59e0b 100%),
+    hero: radial-gradient(circle at 20% 20%, rgba(220, 38, 38, 0.2), transparent 50%),
+    hero2: radial-gradient(circle at 80% 30%, rgba(22, 163, 74, 0.18), transparent 50%),
+    heroBase: linear-gradient(135deg, #fef2f2 0%, #f0fdf4 50%, #fffbeb 100%),
+    heroDark: radial-gradient(circle at 20% 20%, rgba(220, 38, 38, 0.28), transparent 50%),
+    heroDark2: radial-gradient(circle at 80% 30%, rgba(22, 163, 74, 0.24), transparent 50%),
+    heroDarkBase: linear-gradient(135deg, #160505 0%, #08140a 60%, #3a1d05 100%),
+    border: rgba(220, 38, 38, 0.4),
+    borderDark: rgba(34, 197, 94, 0.4),
+    bodyLight: #fdf3f1,
+    bodyDark: #150a08,
+    glow: 0 8px 24px rgba(220, 38, 38, 0.4),
+    shadowHover: 0 24px 48px -12px rgba(220, 38, 38, 0.28),
+    animated: linear-gradient(120deg, #dc2626, #16a34a, #ef4444, #fbbf24),
+  ),
+  "newyear": (
+    primary: linear-gradient(135deg, #1e3a8a 0%, #6d28d9 50%, #f59e0b 100%),
+    hero: radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.2), transparent 50%),
+    hero2: radial-gradient(circle at 80% 30%, rgba(245, 158, 11, 0.18), transparent 50%),
+    heroBase: linear-gradient(135deg, #eff6ff 0%, #eef2ff 50%, #fffbeb 100%),
+    heroDark: radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.28), transparent 50%),
+    heroDark2: radial-gradient(circle at 80% 30%, rgba(245, 158, 11, 0.2), transparent 50%),
+    heroDarkBase: linear-gradient(135deg, #050914 0%, #130a2c 60%, #2b1a05 100%),
+    border: rgba(99, 102, 241, 0.4),
+    borderDark: rgba(245, 158, 11, 0.35),
+    bodyLight: #f2f4fc,
+    bodyDark: #070b16,
+    glow: 0 8px 24px rgba(99, 102, 241, 0.4),
+    shadowHover: 0 24px 48px -12px rgba(99, 102, 241, 0.28),
+    animated: linear-gradient(120deg, #1e3a8a, #6d28d9, #a78bfa, #f59e0b),
+  ),
+  "worldcup": (
+    primary: linear-gradient(135deg, #047857 0%, #3b82f6 50%, #f59e0b 100%),
+    hero: radial-gradient(circle at 20% 20%, rgba(16, 185, 129, 0.2), transparent 50%),
+    hero2: radial-gradient(circle at 80% 30%, rgba(59, 130, 246, 0.2), transparent 50%),
+    heroBase: linear-gradient(135deg, #ecfdf5 0%, #eff6ff 50%, #fffbeb 100%),
+    heroDark: radial-gradient(circle at 20% 20%, rgba(16, 185, 129, 0.26), transparent 50%),
+    heroDark2: radial-gradient(circle at 80% 30%, rgba(59, 130, 246, 0.24), transparent 50%),
+    heroDarkBase: linear-gradient(135deg, #030f0c 0%, #04101f 60%, #241703 100%),
+    border: rgba(16, 185, 129, 0.35),
+    borderDark: rgba(59, 130, 246, 0.4),
+    bodyLight: #eff7f4,
+    bodyDark: #070f10,
+    glow: 0 8px 24px rgba(16, 185, 129, 0.4),
+    shadowHover: 0 24px 48px -12px rgba(16, 185, 129, 0.28),
+    animated: linear-gradient(120deg, #059669, #3b82f6, #22d3ee, #f59e0b),
+  ),
+);
+
+// --- Emit the overrides ---------------------------------------------
+@each $id, $cfg in $events {
+  html[data-event="#{$id}"] {
+    --gradient-primary: #{map.get($cfg, primary)};
+    --nav-border: #{map.get($cfg, border)};
+    --nav-border-dark: #{map.get($cfg, borderDark)};
+    --app-bg: #{map.get($cfg, bodyLight)};
+    --app-bg-dark: #{map.get($cfg, bodyDark)};
+    --glow: #{map.get($cfg, glow)};
+    --shadow-hover: #{map.get($cfg, shadowHover)};
+    --animated-gradient: #{map.get($cfg, animated)};
+  }
+
+  html[data-event="#{$id}"] .hero-gradient {
+    background: #{map.get($cfg, hero)}, #{map.get($cfg, hero2)}, #{map.get($cfg, heroBase)};
+  }
+
+  html[data-event="#{$id}"][data-theme="dark"] .hero-gradient,
+  html.dark[data-event="#{$id}"] .hero-gradient {
+    background: #{map.get($cfg, heroDark)}, #{map.get($cfg, heroDark2)}, #{map.get($cfg, heroDarkBase)};
+  }
+}
+
+// A subtle celebratory ribbon pinned to the top of themed sites
+html[data-event] body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 200;
+  height: 4px;
+  background: var(--gradient-primary);
+}

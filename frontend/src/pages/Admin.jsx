@@ -16,6 +16,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { toaster } from "../components/ui/toaster.jsx";
+import ThemeSwitcher from "../components/admin/ThemeSwitcher.jsx";
 import {
   HiOutlineUsers,
   HiOutlineShoppingBag,
@@ -172,6 +173,9 @@ function Admin() {
         <Heading as="h1" size="lg">
           <span className="gradient-text">Admin Dashboard</span>
         </Heading>
+
+        {/* Site-wide event theme (admin only) */}
+        <ThemeSwitcher />
 
         {/* Stats */}
         <SimpleGrid columns={{ base: 2, md: 4 }} spacing={4}>

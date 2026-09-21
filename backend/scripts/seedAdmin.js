@@ -24,7 +24,13 @@ const run = async () => {
 
   const existing = await User.findOne({ email: ADMIN_EMAIL });
   if (existing) {
-    console.log(`Admin already exists at ${ADMIN_EMAIL}. Skipping.`);
+    if (existing.role === "admin") {
+      console.log(`Admin already exists at ${ADMIN_EMAIL}. Skipping.`);
+    } else {
+      existing.role = "admin";
+      await existing.save();
+      console.log(`Promoted ${ADMIN_EMAIL} to admin.`);
+    }
     await mongoose.disconnect();
     process.exit(0);
   }

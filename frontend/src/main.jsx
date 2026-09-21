@@ -6,7 +6,7 @@ import store from "./redux/Store.js";
 import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import { Toaster } from "./components/ui/toaster";
-import "./styles/animations.css";
+import "./styles/main.scss";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

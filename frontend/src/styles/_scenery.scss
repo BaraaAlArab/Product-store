@@ -1,0 +1,559 @@
+// ============ Event scenery (CSS-only, no images) ============
+// Decorative animated layers for each event theme. Everything is pure shapes.
+
+@use "variables" as v;
+@use "mixins";
+
+// --- Base layer -------------------------------------------------------------
+.event-scenery {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+  --sc-sil: rgba(30, 58, 138, 0.22);
+  --sc-gold: #f59e0b;
+
+  @include mixins.dark {
+    --sc-sil: rgba(9, 11, 26, 0.92);
+  }
+}
+
+// Keep real content above the scenery (same stack level, later in DOM)
+.app-shell > *:not(.event-scenery) {
+  position: relative;
+  z-index: 1;
+}
+
+.sc-sky {
+  position: absolute;
+  inset: 0;
+}
+
+// ============ Shared pieces =================================================
+
+// Twinkling star
+.sc-star {
+  position: absolute;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+  animation: sc-twinkle 2.4s ease-in-out infinite;
+}
+
+@keyframes sc-twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(0.7); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+// Falling confetti strip
+.sc-confetti {
+  position: absolute;
+  top: 0;
+  width: 8px;
+  height: 12px;
+  border-radius: 2px;
+  opacity: 0;
+  animation: sc-conf-fall 5s linear infinite;
+}
+
+@keyframes sc-conf-fall {
+  0% { transform: translate3d(0, -3vh, 0) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.9; }
+  80% { opacity: 0.9; }
+  100% { transform: translate3d(var(--sway), 108vh, 0) rotate(var(--spin)); opacity: 0; }
+}
+
+// Crescent moon made with a mask cutout
+.sc-moon {
+  position: absolute;
+  top: 7vh;
+  right: 9%;
+  width: 118px;
+  height: 118px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fef3c7, #fbbf24 55%, #f59e0b);
+  -webkit-mask: radial-gradient(circle at 78% 30%, transparent 0 52px, #000 53px);
+  mask: radial-gradient(circle at 78% 30%, transparent 0 52px, #000 53px);
+  animation: sc-float 7s ease-in-out infinite alternate;
+}
+
+.sc-moon-sm {
+  top: 8vh;
+  right: 13%;
+  width: 74px;
+  height: 74px;
+  -webkit-mask: radial-gradient(circle at 76% 30%, transparent 0 31px, #000 32px);
+  mask: radial-gradient(circle at 76% 30%, transparent 0 31px, #000 32px);
+}
+
+@keyframes sc-float {
+  from { transform: translateY(0) rotate(-4deg); }
+  to { transform: translateY(16px) rotate(5deg); }
+}
+
+// Large soft halo behind the moon
+.sc-moon-halo {
+  position: absolute;
+  top: 4vh;
+  right: 6%;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(251, 191, 36, 0.45), rgba(251, 191, 36, 0) 68%);
+  animation: sc-halo 5s ease-in-out infinite alternate;
+}
+
+@keyframes sc-halo {
+  from { opacity: 0.5; transform: scale(1); }
+  to { opacity: 1; transform: scale(1.18); }
+}
+
+// ============ Ramadan — moon, lanterns, mosque ===============================
+
+// --- Sky ---
+html[data-event="ramadan"] .sc-sky {
+  background:
+    radial-gradient(circle at 82% 10%, rgba(251, 191, 36, 0.3), transparent 32%),
+    radial-gradient(circle at 10% 20%, rgba(45, 212, 191, 0.16), transparent 30%),
+    linear-gradient(180deg, rgba(6, 95, 70, 0.5), rgba(6, 95, 70, 0) 55%);
+}
+
+html[data-event="ramadan"][data-theme="dark"] .sc-sky,
+html.dark[data-event="ramadan"] .sc-sky {
+  background:
+    radial-gradient(circle at 82% 10%, rgba(251, 191, 36, 0.35), transparent 34%),
+    radial-gradient(circle at 10% 20%, rgba(45, 212, 191, 0.22), transparent 32%),
+    linear-gradient(180deg, rgba(3, 35, 28, 0.95), rgba(3, 35, 28, 0.1) 70%);
+}
+
+// --- Lanterns (hanging + swinging) ---
+.sc-lantern {
+  position: absolute;
+  top: 0;
+  width: 30px;
+  transform-origin: 50% 0;
+  animation: sc-swing 5s ease-in-out infinite;
+}
+
+@keyframes sc-swing {
+  0%, 100% { transform: rotate(-10deg); }
+  50% { transform: rotate(10deg); }
+}
+
+.sc-l-string {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: var(--slen);
+  background: linear-gradient(180deg, transparent, rgba(245, 158, 11, 0.85));
+}
+
+.sc-l-tip {
+  margin-top: var(--slen);
+  width: 9px;
+  height: 20px;
+  background: linear-gradient(180deg, #f59e0b, #92400e);
+  border-radius: 5px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.sc-l-body {
+  width: 30px;
+  height: 38px;
+  border-radius: 10px 10px 8px 8px;
+  margin-top: 2px;
+  background: radial-gradient(circle at 50% 28%, rgba(253, 224, 71, 0.95), rgba(217, 119, 6, 0.88) 72%);
+  box-shadow:
+    0 0 26px rgba(251, 191, 36, 0.55),
+    inset 0 0 10px rgba(255, 255, 255, 0.65);
+}
+
+.sc-l-base {
+  width: 11px;
+  height: 7px;
+  background: #f59e0b;
+  border-radius: 2px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+// --- Mosque silhouettes ---
+.sc-mosque {
+  position: absolute;
+  bottom: 0;
+  animation: sc-bob 5s ease-in-out infinite alternate;
+}
+
+@keyframes sc-bob {
+  from { transform: translateY(0); }
+  to { transform: translateY(-4px); }
+}
+
+.sc-m-base {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 11%;
+  background: var(--sc-sil);
+  border-radius: 6px 6px 0 0;
+}
+
+.sc-m-minaret {
+  position: absolute;
+  bottom: 0;
+  width: 5%;
+  background: var(--sc-sil);
+  border-radius: 3px 3px 0 0;
+}
+
+.sc-m-minaret::after {
+  content: "";
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--sc-gold);
+}
+
+.sc-m-dome {
+  position: absolute;
+  bottom: 11%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 34%;
+  height: 40%;
+  background: var(--sc-sil);
+  border-radius: 50% 50% 4px 4px / 60% 60% 4px 4px;
+}
+
+.sc-m-dome::before {
+  content: "";
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  box-shadow: inset -4px -3px 0 0 var(--sc-gold);
+}
+
+// ============ Eid — crescent, bunting, gold sparkles =========================
+
+html[data-event="eid"] .sc-sky {
+  background:
+    radial-gradient(circle at 84% 12%, rgba(250, 204, 21, 0.28), transparent 30%),
+    radial-gradient(circle at 12% 22%, rgba(132, 204, 22, 0.16), transparent 28%),
+    linear-gradient(180deg, rgba(132, 204, 22, 0.35), rgba(132, 204, 22, 0) 55%);
+}
+
+html[data-event="eid"][data-theme="dark"] .sc-sky,
+html.dark[data-event="eid"] .sc-sky {
+  background:
+    radial-gradient(circle at 84% 12%, rgba(250, 204, 21, 0.32), transparent 34%),
+    radial-gradient(circle at 12% 22%, rgba(132, 204, 22, 0.2), transparent 32%),
+    linear-gradient(180deg, rgba(20, 30, 5, 0.95), rgba(20, 30, 5, 0.1) 70%);
+}
+
+.sc-star-gold {
+  background: #fde047;
+  box-shadow: 0 0 10px rgba(253, 224, 71, 0.9);
+}
+
+.sc-bunting-line {
+  position: absolute;
+  top: 6vh;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.65), transparent);
+}
+
+.sc-pennant {
+  position: absolute;
+  top: 6vh;
+  width: 0;
+  height: 0;
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-top: 14px solid #f59e0b;
+  transform-origin: 50% 0;
+  animation: sc-sway 2.6s ease-in-out infinite;
+}
+
+@keyframes sc-sway {
+  0%, 100% { transform: rotate(-10deg); }
+  50% { transform: rotate(10deg); }
+}
+
+// ============ Easter — hopping eggs + falling petals =========================
+
+html[data-event="easter"] .sc-sky {
+  background:
+    radial-gradient(circle at 20% 15%, rgba(236, 72, 153, 0.2), transparent 32%),
+    radial-gradient(circle at 80% 25%, rgba(167, 139, 250, 0.2), transparent 30%),
+    linear-gradient(180deg, rgba(236, 72, 153, 0.22), rgba(236, 72, 153, 0) 55%);
+}
+
+html[data-event="easter"][data-theme="dark"] .sc-sky,
+html.dark[data-event="easter"] .sc-sky {
+  background:
+    radial-gradient(circle at 20% 15%, rgba(236, 72, 153, 0.26), transparent 34%),
+    radial-gradient(circle at 80% 25%, rgba(167, 139, 250, 0.24), transparent 32%),
+    linear-gradient(180deg, rgba(38, 12, 26, 0.95), rgba(38, 12, 26, 0.1) 70%);
+}
+
+.sc-egg {
+  position: absolute;
+  border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%;
+  box-shadow: inset -4px -5px 0 rgba(0, 0, 0, 0.08), 0 10px 22px rgba(0, 0, 0, 0.12);
+  animation: sc-egg-hop 2.4s ease-in-out infinite;
+}
+
+@keyframes sc-egg-hop {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  32% { transform: translateY(-30px) rotate(-6deg) scale(1.04, 0.96); }
+  55% { transform: translateY(-4px) rotate(4deg); }
+  72% { transform: translateY(-18px) rotate(-3deg) scale(1.02, 0.98); }
+}
+
+.sc-petal {
+  position: absolute;
+  top: 0;
+  border-radius: 75% 0 75% 0;
+  opacity: 0;
+  animation-name: sc-conf-fall, sc-petal-spin;
+  animation-timing-function: linear, ease-in-out;
+  animation-iteration-count: infinite, infinite;
+}
+
+@keyframes sc-petal-spin {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(60deg) scale(1.15); }
+}
+
+// ============ Christmas — snow + baubles =====================================
+
+html[data-event="christmas"] .sc-sky {
+  background:
+    radial-gradient(circle at 20% 15%, rgba(248, 113, 113, 0.18), transparent 32%),
+    radial-gradient(circle at 78% 20%, rgba(34, 197, 94, 0.16), transparent 30%),
+    linear-gradient(180deg, rgba(30, 41, 59, 0.4), rgba(30, 41, 59, 0) 60%);
+}
+
+html[data-event="christmas"][data-theme="dark"] .sc-sky,
+html.dark[data-event="christmas"] .sc-sky {
+  background:
+    radial-gradient(circle at 20% 15%, rgba(248, 113, 113, 0.22), transparent 34%),
+    radial-gradient(circle at 78% 20%, rgba(34, 197, 94, 0.2), transparent 32%),
+    linear-gradient(180deg, rgba(15, 8, 6, 0.95), rgba(15, 8, 6, 0.1) 72%);
+}
+
+.sc-snow {
+  position: absolute;
+  top: 0;
+  border-radius: 50%;
+  background: #fff;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.65));
+  animation: sc-snow-fall 9s linear infinite;
+}
+
+@keyframes sc-snow-fall {
+  0% { transform: translate3d(0, -4vh, 0); }
+  100% { transform: translate3d(var(--sway), 108vh, 0); }
+}
+
+.sc-bauble {
+  position: absolute;
+  top: 3vh;
+  border-radius: 50%;
+  transform-origin: 50% 0;
+  box-shadow: 0 0 18px currentColor, inset -3px -4px 0 rgba(0, 0, 0, 0.18);
+  color: rgba(255, 235, 235, 0.7);
+  animation: sc-swing 4s ease-in-out infinite;
+}
+
+// ============ New Year — fireworks + confetti ================================
+
+html[data-event="newyear"] .sc-sky {
+  background:
+    radial-gradient(circle at 50% 12%, rgba(129, 140, 248, 0.22), transparent 40%),
+    linear-gradient(180deg, rgba(30, 58, 138, 0.5), rgba(30, 58, 138, 0) 60%);
+}
+
+html[data-event="newyear"][data-theme="dark"] .sc-sky,
+html.dark[data-event="newyear"] .sc-sky {
+  background:
+    radial-gradient(circle at 50% 12%, rgba(129, 140, 248, 0.26), transparent 42%),
+    linear-gradient(180deg, rgba(5, 10, 24, 0.95), rgba(5, 10, 24, 0.1) 72%);
+}
+
+.sc-yr {
+  position: absolute;
+  top: 12vh;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: clamp(56px, 12vw, 150px);
+  letter-spacing: 0.06em;
+  background: var(--animated-gradient);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  opacity: 0.85;
+  animation: sc-yr-glow 6s ease-in-out infinite;
+}
+
+@keyframes sc-yr-glow {
+  0%, 100% { background-position: 0% 50%; opacity: 0.75; }
+  50% { background-position: 100% 50%; opacity: 1; }
+}
+
+.sc-firework {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.sc-fw-p {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--fw-c);
+  box-shadow: 0 0 8px var(--fw-c);
+  transform: rotate(calc(var(--i) * 1deg)) translateY(0);
+  animation: sc-boom 1.8s ease-out infinite;
+  opacity: 0;
+}
+
+@keyframes sc-boom {
+  0% { transform: rotate(calc(var(--i) * 1deg)) translateY(0) scale(0.4); opacity: 1; }
+  55% { opacity: 1; }
+  100% { transform: rotate(calc(var(--i) * 1deg)) translateY(-68px) scale(0.5); opacity: 0; }
+}
+
+// ============ World Cup — pitch, ball, beams =================================
+
+html[data-event="worldcup"] .sc-sky {
+  background:
+    radial-gradient(circle at 50% 10%, rgba(59, 130, 246, 0.22), transparent 40%),
+    linear-gradient(180deg, rgba(4, 120, 87, 0.4), rgba(4, 120, 87, 0) 60%);
+}
+
+html[data-event="worldcup"][data-theme="dark"] .sc-sky,
+html.dark[data-event="worldcup"] .sc-sky {
+  background:
+    radial-gradient(circle at 50% 10%, rgba(59, 130, 246, 0.24), transparent 42%),
+    linear-gradient(180deg, rgba(3, 20, 15, 0.95), rgba(3, 20, 15, 0.1) 72%);
+}
+
+.sc-pitch {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 14vh;
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.18) 0 2px, transparent 2px 72px),
+    linear-gradient(180deg, #15803d, #166534);
+  opacity: 0.85;
+}
+
+.sc-pitch::before,
+.sc-pitch::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.sc-pitch::before { left: 25%; }
+.sc-pitch::after { right: 25%; }
+
+.sc-ball {
+  position: absolute;
+  bottom: 26vh;
+  left: -44px;
+  width: 34px;
+  height: 34px;
+  animation: sc-ball-x 9s linear infinite;
+}
+
+.sc-ball-in {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 30%, #fff 0 54%, transparent 56%),
+    radial-gradient(circle at 63% 42%, rgba(17, 24, 39, 0.85) 0 16%, transparent 18%),
+    radial-gradient(circle at 38% 58%, rgba(17, 24, 39, 0.85) 0 16%, transparent 18%),
+    linear-gradient(135deg, #f8fafc, #e2e8f0);
+  box-shadow: inset -4px -5px 0 rgba(15, 23, 42, 0.28), 0 8px 18px rgba(0, 0, 0, 0.35);
+  animation:
+    sc-ball-bounce 1.5s ease-in-out infinite,
+    sc-ball-spin 0.9s linear infinite;
+}
+
+@keyframes sc-ball-x {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(100vw + 60px)); }
+}
+
+@keyframes sc-ball-bounce {
+  0%, 100% { transform: translateY(0) scale(1, 1); }
+  50% { transform: translateY(-34px) scale(1, 0.92); }
+}
+
+@keyframes sc-ball-spin {
+  to { transform: rotate(360deg); }
+}
+
+.sc-beam {
+  position: absolute;
+  top: 0;
+  width: 56vw;
+  height: 68vh;
+  opacity: 0.16;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(251, 191, 36, 0.5) 40%, transparent 75%);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  transform-origin: 50% 0;
+  animation: sc-beam 9s ease-in-out infinite;
+}
+
+.sc-beam-a { left: -14vw; }
+.sc-beam-b { right: -14vw; animation-delay: 2.2s; }
+
+@keyframes sc-beam {
+  0%, 100% { transform: rotate(-24deg); opacity: 0.14; }
+  50% { transform: rotate(24deg); opacity: 0.22; }
+}
+
+// ============ Reduced motion =================================================
+
+@media (prefers-reduced-motion: reduce) {
+  .event-scenery {
+    opacity: 0.7;
+
+    .sc-skypulse,
+    .sc-fw-p,
+    .sc-confetti {
+      animation: none;
+    }
+  }
+}

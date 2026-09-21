@@ -1,0 +1,28 @@
+// ============ Base & font loading ============
+
+@use "variables" as v;
+@use "mixins";
+
+// External fonts (kept as a URL import — not a local @import)
+/* stylelint-disable no-invalid-position-at-import-rule */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap");
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: v.$font-body;
+  -webkit-font-smoothing: antialiased;
+}
+
+// Utility
+.gradient-text {
+  @include mixins.gradient-text;
+}

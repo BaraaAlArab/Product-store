@@ -1,0 +1,118 @@
+// ============ Reusable component styles ============
+
+@use "variables" as v;
+@use "mixins";
+
+// --- Product card ---
+.product-card {
+  transform: translateY(0);
+  transition: transform v.$dur-fast v.$ease-out, box-shadow v.$dur-fast ease;
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: v.$shadow-hover;
+  }
+}
+
+.product-image {
+  transition: transform 0.6s v.$ease-out;
+
+  .product-card:hover & {
+    transform: scale(1.06);
+  }
+}
+
+// --- Shimmer skeleton ---
+@keyframes shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(148, 163, 184, 0.15) 25%,
+    rgba(148, 163, 184, 0.35) 50%,
+    rgba(148, 163, 184, 0.15) 75%
+  );
+  background-size: 800px 100%;
+  animation: shimmer 1.6s infinite linear;
+}
+
+// --- Buttons ---
+.btn-gradient {
+  @include mixins.gradient-button;
+}
+
+// --- Navbar ---
+.glass-nav {
+  @include mixins.glass-nav;
+}
+
+// --- Hero / featured surfaces ---
+.hero-gradient {
+  @include mixins.hero-surface("light");
+  border-radius: v.$radius-lg;
+
+  @include mixins.dark {
+    @include mixins.hero-surface("dark");
+  }
+}
+
+// --- Animated gradient background (decorative) ---
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animated-gradient {
+  background: var(
+    --animated-gradient,
+    linear-gradient(120deg, #6366f1, #8b5cf6, #a855f7, #d946ef)
+  );
+  background-size: 300% 300%;
+  animation: gradientShift 12s ease infinite;
+}
+
+// --- Scroller marquee ---
+.scroller-track {
+  overflow: hidden;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.scroller-inner {
+  animation: marquee 30s linear infinite;
+
+  &:hover {
+    animation-play-state: paused;
+  }
+
+  [data-reduced-motion="true"] &,
+  &.no-anim {
+    animation: none;
+  }
+}
+
+// --- Misc surfaces ---
+.card-surface {
+  background: v.$surface-light;
+
+  @include mixins.dark {
+    background: #1e1b2e;
+  }
+}
+
+// --- App shell (full-page background, tinted per event theme) ---
+.app-shell {
+  background: var(--app-bg, #f4f6f8);
+  transition: background v.$dur-med ease;
+
+  @include mixins.dark {
+    background: var(--app-bg-dark, #111827);
+  }
+}
