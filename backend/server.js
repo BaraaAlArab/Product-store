@@ -8,6 +8,7 @@ import products from "./Routes/Product.Routes.js";
 import User from "./Routes/User.Routes.js";
 import orders from "./Routes/Order.Routes.js";
 import theme from "./Routes/Theme.Routes.js";
+import messages from "./Routes/Message.Routes.js";
 
 import { connectDB } from "./config/db.js";
 
@@ -32,6 +33,7 @@ app.use("/api/users", User);
 app.use("/api/products", products);
 app.use("/api/orders", orders);
 app.use("/api/theme", theme);
+app.use("/api/contact", messages);
 
 // In production, serve the built React frontend from the same server
 const frontendDist = path.resolve(__dirname, "..", "frontend", "dist");

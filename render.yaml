@@ -12,5 +12,11 @@ services:
         sync: false
       - key: JWT_SECRET
         sync: false
+      - key: GMAIL_USER
+        sync: false
+      - key: GMAIL_APP_PASSWORD
+        sync: false
+      - key: CONTACT_TO
+        sync: false
       - key: PORT
         value: 10000

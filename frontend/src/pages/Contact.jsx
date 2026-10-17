@@ -21,19 +21,30 @@ function ContactPage() {
 
   const handleChange = (e) => setForm({...form, [e.target.name]: e.target.value});
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.name || !form.email || !form.message) {
       toaster.create({title: "Missing fields", description: "Please fill in all fields.", type: "error", duration: 4000});
       return;
     }
     setSubmitting(true);
-    // Opens the user's email client pre-addressed to support
-    const subject = encodeURIComponent(`[Product Store] Support request from ${form.name}`);
-    const body = encodeURIComponent(`${form.message}\n\n--\nFrom: ${form.name} <${form.email}>`);
-    window.location.href = `mailto:support@productstore.example?subject=${subject}&body=${body}`;
-    setSubmitting(false);
-    toaster.create({title: "Opening your email app…", type: "info", duration: 3000});
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(form),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(data.message || "Something went wrong. Please try again.");
+      }
+      setForm({name: "", email: "", message: ""});
+      toaster.create({title: "Message sent", description: "Thanks! We'll get back to you soon.", type: "success", duration: 4000});
+    } catch (error) {
+      toaster.create({title: "Could not send", description: error.message, type: "error", duration: 5000});
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -87,7 +98,7 @@ function ContactPage() {
                 <Field.Label mb={1}>Message</Field.Label>
                 <Textarea name="message" value={form.message} onChange={handleChange} placeholder="How can we help?" rows={6} />
               </Field.Root>
-              <Button className="btn-gradient" type="submit" rounded="xl" loading={submitting} loadingText="Opening…">
+              <Button className="btn-gradient" type="submit" rounded="xl" loading={submitting} loadingText="Sending…">
                 Send message
               </Button>
             </VStack>

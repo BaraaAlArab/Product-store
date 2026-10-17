@@ -48,6 +48,7 @@ function Admin() {
   const [editingUserId, setEditingUserId] = useState(null);
   const [editForm, setEditForm] = useState({ name: "", email: "", role: "" });
   const [saving, setSaving] = useState(false);
+  const [messages, setMessages] = useState([]);
   const token = localStorage.getItem("token");
   const { currentUser } = useSelector((state) => state.user);
   const navigate = useNavigate();
@@ -89,9 +90,24 @@ function Admin() {
     }
   };
 
+  const fetchMessages = async () => {
+    try {
+      const res = await fetch("/api/contact/admin/messages", {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error("Unauthorized");
+      const data = await res.json();
+      setMessages(data);
+    } catch {
+      // messages are secondary; don't block the page
+    }
+  };
+
   useEffect(() => {
     fetchUsers();
     fetchOrders();
+    fetchMessages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -131,6 +147,33 @@ function Admin() {
     setSaving(false);
   };
 
+  const handleToggleMessageRead = async (id) => {
+    const res = await fetch(`/api/contact/admin/messages/${id}`, {
+      method: "PATCH",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (res.ok) {
+      const updated = await res.json();
+      setMessages((prev) => prev.map((m) => (m._id === id ? updated : m)));
+    } else {
+      toaster.create({ title: "Failed to update message.", type: "error", duration: 3000 });
+    }
+  };
+
+  const handleDeleteMessage = async (id) => {
+    if (!window.confirm("Delete this message?")) return;
+    const res = await fetch(`/api/contact/admin/messages/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (res.ok) {
+      setMessages((prev) => prev.filter((m) => m._id !== id));
+      toaster.create({ title: "Message deleted.", type: "success", duration: 3000 });
+    } else {
+      toaster.create({ title: "Failed to delete message.", type: "error", duration: 3000 });
+    }
+  };
+
   const applyStatus = async (order, status) => {
     const response = await fetch(`/api/orders/admin/${order._id}/status`, {
       method: "PUT",
@@ -159,6 +202,7 @@ function Admin() {
   const stats = statusCounts(orders);
   const clientCount = users.filter((u) => u.role === "client").length;
   const activeOrders = orders.filter((o) => ["pending", "processing", "shipped"].includes(o.status));
+  const unreadCount = messages.filter((m) => !m.read).length;
 
   const statCards = [
     { label: "Clients", value: clientCount, icon: HiOutlineUsers, color: "teal.500", bg: "teal.50" },
@@ -257,6 +301,65 @@ function Admin() {
                       </Table.Row>
                     );
                   })}
+                </Table.Body>
+              </Table.Root>
+            </Box>
+          )}
+        </Box>
+
+        {/* Contact messages */}
+        <Box>
+          <Heading as="h2" size="md" mb={4}>
+            Messages{" "}
+            <Badge colorScheme={unreadCount > 0 ? "orange" : "green"} rounded="full" px={2} ml={2}>
+              {unreadCount} unread
+            </Badge>
+          </Heading>
+
+          {messages.length === 0 ? (
+            <Text color="gray.500">No messages yet.</Text>
+          ) : (
+            <Box overflowX="auto">
+              <Table.Root size="sm">
+                <Table.Header>
+                  <Table.Row>
+                    <Table.ColumnHeader>From</Table.ColumnHeader>
+                    <Table.ColumnHeader>Message</Table.ColumnHeader>
+                    <Table.ColumnHeader>Date</Table.ColumnHeader>
+                    <Table.ColumnHeader>Actions</Table.ColumnHeader>
+                  </Table.Row>
+                </Table.Header>
+                <Table.Body>
+                  {messages.map((m) => (
+                    <Table.Row
+                      key={m._id}
+                      bg={m.read ? undefined : "orange.50"}
+                      _dark={{ bg: m.read ? undefined : "whiteAlpha.100" }}
+                    >
+                      <Table.Cell>
+                        <Text fontWeight="bold">{m.name}</Text>
+                        <Text fontSize="xs" color="gray.500">{m.email}</Text>
+                      </Table.Cell>
+                      <Table.Cell maxW="360px">
+                        <Text fontSize="sm" whiteSpace="pre-wrap">{m.message}</Text>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <Text fontSize="sm" color="gray.500">
+                          {new Date(m.createdAt).toLocaleDateString()}
+                        </Text>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <HStack spacing={2}>
+                          <Button size="xs" variant="outline" onClick={() => handleToggleMessageRead(m._id)}>
+                            {m.read ? "Mark unread" : "Mark read"}
+                          </Button>
+                          <Button size="xs" colorScheme="red" variant="outline" onClick={() => handleDeleteMessage(m._id)}>
+                            Delete
+                          </Button>
+                        </HStack>
+                      </Table.Cell>
+                    </Table.Row>
+                  ))}
                 </Table.Body>
               </Table.Root>
             </Box>
