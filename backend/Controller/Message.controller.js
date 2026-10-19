@@ -55,6 +55,13 @@ export const createMessage = async (req, res) => {
     });
     return res.status(502).json({
       message: "Message stored, but the email could not be sent. Try again later.",
+      // TEMP diagnostics — remove after debugging
+      debug: {
+        message: error.message,
+        code: error.code,
+        responseCode: error.responseCode,
+        response: error.response,
+      },
     });
   }
 
