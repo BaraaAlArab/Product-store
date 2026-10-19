@@ -29,13 +29,20 @@ export const createMessage = async (req, res) => {
   });
 
   try {
-    const info = await transporter.sendMail({
+    const send = transporter.sendMail({
       from: `"Product Store" <${process.env.GMAIL_USER}>`,
       to: process.env.CONTACT_TO,
       replyTo: saved.email,
       subject: `[Product Store] New contact message from ${saved.name}`,
       text: `Name: ${saved.name}\nEmail: ${saved.email}\n\n${saved.message}`,
     });
+    send.catch(() => {}); // avoid unhandled rejection if the race times out first
+    const info = await Promise.race([
+      send,
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("SMTP send timed out after 35s")), 35000)
+      ),
+    ]);
     console.log("Email sent OK:", info.messageId, "->", process.env.CONTACT_TO);
   } catch (error) {
     console.error("Email send failed:", {
