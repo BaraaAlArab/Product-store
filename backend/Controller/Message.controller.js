@@ -29,20 +29,32 @@ export const createMessage = async (req, res) => {
   });
 
   try {
-    const send = transporter.sendMail({
-      from: `"Product Store" <${process.env.GMAIL_USER}>`,
-      to: process.env.CONTACT_TO,
-      replyTo: saved.email,
-      subject: `[Product Store] New contact message from ${saved.name}`,
-      text: `Name: ${saved.name}\nEmail: ${saved.email}\n\n${saved.message}`,
-    });
-    send.catch(() => {}); // avoid unhandled rejection if the race times out first
-    const info = await Promise.race([
-      send,
-      new Promise((_, reject) =>
-        setTimeout(() => reject(new Error("SMTP send timed out after 50s")), 50000)
-      ),
-    ]);
+    // Gmail can drop connections from datacenter IPs; retry once after a pause.
+    const sendOnce = () => {
+      const send = transporter.sendMail({
+        from: `"Product Store" <${process.env.GMAIL_USER}>`,
+        to: process.env.CONTACT_TO,
+        replyTo: saved.email,
+        subject: `[Product Store] New contact message from ${saved.name}`,
+        text: `Name: ${saved.name}\nEmail: ${saved.email}\n\n${saved.message}`,
+      });
+      send.catch(() => {}); // avoid unhandled rejection if the race times out first
+      return Promise.race([
+        send,
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error("SMTP send timed out after 40s")), 40000)
+        ),
+      ]);
+    };
+
+    let info;
+    try {
+      info = await sendOnce();
+    } catch (firstError) {
+      console.log("Email attempt 1 failed, retrying in 20s:", firstError.message);
+      await new Promise((r) => setTimeout(r, 20000));
+      info = await sendOnce();
+    }
     console.log("Email sent OK:", info.messageId, "->", process.env.CONTACT_TO);
   } catch (error) {
     console.error("Email send failed:", {
