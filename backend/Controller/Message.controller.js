@@ -37,7 +37,14 @@ export const createMessage = async (req, res) => {
       text: `Name: ${saved.name}\nEmail: ${saved.email}\n\n${saved.message}`,
     });
   } catch (error) {
-    console.error("Email send failed:", error.message);
+    console.error("Email send failed:", {
+      message: error.message,
+      code: error.code,
+      responseCode: error.responseCode,
+      response: error.response,
+      to: process.env.CONTACT_TO,
+      from: process.env.GMAIL_USER,
+    });
     return res.status(502).json({
       message: "Message stored, but the email could not be sent. Try again later.",
     });

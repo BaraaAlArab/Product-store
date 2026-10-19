@@ -11,6 +11,7 @@ import theme from "./Routes/Theme.Routes.js";
 import messages from "./Routes/Message.Routes.js";
 
 import { connectDB } from "./config/db.js";
+import { verifyMailer } from "./config/mailer.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.PORT || 5000;
@@ -58,5 +59,6 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, () => {
   connectDB();
+  verifyMailer();
   console.log("server started at http://localhost:" + PORT);
 });
