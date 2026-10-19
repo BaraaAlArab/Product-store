@@ -29,13 +29,14 @@ export const createMessage = async (req, res) => {
   });
 
   try {
-    await transporter.sendMail({
+    const info = await transporter.sendMail({
       from: `"Product Store" <${process.env.GMAIL_USER}>`,
       to: process.env.CONTACT_TO,
       replyTo: saved.email,
       subject: `[Product Store] New contact message from ${saved.name}`,
       text: `Name: ${saved.name}\nEmail: ${saved.email}\n\n${saved.message}`,
     });
+    console.log("Email sent OK:", info.messageId, "->", process.env.CONTACT_TO);
   } catch (error) {
     console.error("Email send failed:", {
       message: error.message,
