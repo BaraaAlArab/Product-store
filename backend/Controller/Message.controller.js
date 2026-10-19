@@ -40,7 +40,7 @@ export const createMessage = async (req, res) => {
     const info = await Promise.race([
       send,
       new Promise((_, reject) =>
-        setTimeout(() => reject(new Error("SMTP send timed out after 35s")), 35000)
+        setTimeout(() => reject(new Error("SMTP send timed out after 50s")), 50000)
       ),
     ]);
     console.log("Email sent OK:", info.messageId, "->", process.env.CONTACT_TO);

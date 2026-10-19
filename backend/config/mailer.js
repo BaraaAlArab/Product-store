@@ -1,19 +1,18 @@
 import nodemailer from "nodemailer";
 
-// Explicit host/port instead of service:"gmail" (port 465 implicit TLS), which
-// can hang on cloud hosts like Render. Port 587 + STARTTLS is more reliable.
+// Port 465 (implicit TLS) works from Render; port 587 times out there.
+// Hard timeouts so a stalled Gmail connection can't hang requests forever.
 export const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
-  requireTLS: true,
+  port: 465,
+  secure: true,
   auth: {
     user: process.env.GMAIL_USER,
     pass: process.env.GMAIL_APP_PASSWORD,
   },
-  connectionTimeout: 10000,
-  greetingTimeout: 10000,
-  socketTimeout: 20000,
+  connectionTimeout: 15000,
+  greetingTimeout: 15000,
+  socketTimeout: 30000,
 });
 
 const state = (v) => (v ? `set (length=${v.length})` : "MISSING");
