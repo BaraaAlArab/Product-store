@@ -1,4 +1,4 @@
-import { transporter } from "../config/mailer.js";
+import { sendContactNotification } from "../config/mailer.js";
 import Message from "../models/Message.model.js";
 
 export const createMessage = async (req, res) => {
@@ -28,47 +28,12 @@ export const createMessage = async (req, res) => {
     message: message.trim(),
   });
 
-  try {
-    // Gmail can drop connections from datacenter IPs; retry once after a pause.
-    const sendOnce = () => {
-      const send = transporter.sendMail({
-        from: `"Product Store" <${process.env.GMAIL_USER}>`,
-        to: process.env.CONTACT_TO,
-        replyTo: saved.email,
-        subject: `[Product Store] New contact message from ${saved.name}`,
-        text: `Name: ${saved.name}\nEmail: ${saved.email}\n\n${saved.message}`,
-      });
-      send.catch(() => {}); // avoid unhandled rejection if the race times out first
-      return Promise.race([
-        send,
-        new Promise((_, reject) =>
-          setTimeout(() => reject(new Error("SMTP send timed out after 40s")), 40000)
-        ),
-      ]);
-    };
-
-    let info;
-    try {
-      info = await sendOnce();
-    } catch (firstError) {
-      console.log("Email attempt 1 failed, retrying in 20s:", firstError.message);
-      await new Promise((r) => setTimeout(r, 20000));
-      info = await sendOnce();
-    }
-    console.log("Email sent OK:", info.messageId, "->", process.env.CONTACT_TO);
-  } catch (error) {
-    console.error("Email send failed:", {
-      message: error.message,
-      code: error.code,
-      responseCode: error.responseCode,
-      response: error.response,
-      to: process.env.CONTACT_TO,
-      from: process.env.GMAIL_USER,
-    });
-    return res.status(502).json({
-      message: "Message stored, but the email could not be sent. Try again later.",
-    });
-  }
+  // Email goes out in the background with spaced retries — Gmail intermittently
+  // drops SMTP connections from Render's IP, so blocking the request on it made
+  // the form fail. The message is always stored in the admin dashboard either way.
+  sendContactNotification(saved).catch((error) =>
+    console.error("Email notification crashed:", error.message)
+  );
 
   res.status(201).json({ message: "Message sent successfully." });
 };
